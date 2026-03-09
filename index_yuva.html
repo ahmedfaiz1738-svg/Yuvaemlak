@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n-title="page_title">YUVA — Prestige Real Estate · İstanbul</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;0,6..96,500;1,6..96,300;1,6..96,400;1,6..96,500&family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Tenor+Sans&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════
+   RESET & ROOT
+═══════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --black:   #050507;
+  --black2:  #0B0B0F;
+  --black3:  #111116;
+  --gold:    #D4A843;
+  --gold2:   #EDD07A;
+  --gold3:   #F5E4A8;
+  --plat:    #E2DAC8;
+  --smoke:   #A09080;
+  --white:   #FAF7F2;
+  /* Text shadows for readability over images */
+  --tshadow: 0 2px 12px rgba(0,0,0,0.85);
+  --tshadow-sm: 0 1px 6px rgba(0,0,0,0.7);
+  --r: 4px;
+}
+html { scroll-behavior: smooth; font-size:15px; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Tenor Sans', sans-serif;
+  overflow-x: hidden;
+}
+/* Custom cursor only on devices with a fine pointer (mouse) */
+@media (pointer: fine) {
+  body { cursor: none; }
+}
+::selection { background: var(--gold); color: var(--black); }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold); }
+
+/* ═══════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════ */
+#cur-outer, #cur-inner { display: none; }
+@media (pointer: fine) {
+  #cur-outer {
+    display: block;
+    position: fixed; top:0; left:0; z-index:9999; pointer-events:none;
+    width: 36px; height: 36px; border-radius:50%;
+    border: 1px solid rgba(201,168,76,0.6);
+    transform: translate(-50%,-50%);
+    transition: transform 0.15s ease, width 0.3s, height 0.3s, opacity 0.3s;
+  }
+  #cur-inner {
+    display: block;
+    position: fixed; top:0; left:0; z-index:9999; pointer-events:none;
+    width: 5px; height: 5px; border-radius:50%;
+    background: var(--gold);
+    transform: translate(-50%,-50%);
+    transition: transform 0.06s linear;
+  }
+  body:hover #cur-outer { opacity:1; }
+  a:hover ~ #cur-outer, button:hover ~ #cur-outer { width:56px; height:56px; }
+}
+
+/* ═══════════════════════════════════════
+   GRAIN OVERLAY
+═══════════════════════════════════════ */
+#grain {
+  position: fixed; inset:0; z-index:9998; pointer-events:none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:500;
+  padding: 0 6vw;
+  height: 76px;
+  display: flex; align-items:center; justify-content:space-between;
+  transition: background 0.5s, border-color 0.5s;
+}
+nav.scrolled {
+  background: rgba(5,5,7,0.95);
+  backdrop-filter: blur(28px) saturate(1.8);
+  border-bottom: 1px solid rgba(212,168,67,0.22);
+}
+.nav-logo {
+  display: flex; align-items:center; gap:14px;
+  text-decoration: none;
+}
+.nav-emblem {
+  position: relative; width:34px; height:34px;
+}
+.nav-emblem svg { width:100%; height:100%; }
+.nav-wordmark {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 1.2rem; letter-spacing:0.3em;
+  text-transform: uppercase; color: var(--white);
+}
+.nav-wordmark span { color: var(--gold); }
+.nav-links {
+  display: flex; align-items:center; gap:38px; list-style:none;
+}
+.nav-links a {
+  font-size: 0.85rem; letter-spacing:0.18em; text-transform:uppercase;
+  color: rgba(248,245,239,0.85); text-decoration:none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-phone {
+  font-family:'Bodoni Moda', serif;
+  font-size: 0.95rem; letter-spacing:0.08em;
+  color: var(--gold); text-decoration:none;
+  border: 1px solid rgba(201,168,76,0.7);
+  padding: 8px 20px;
+  transition: background 0.3s, color 0.3s;
+}
+.nav-phone:hover { background: var(--gold); color: var(--black); }
+
+/* HAMBURGER MENU */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 600;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--gold);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.nav-hamburger.active span:nth-child(2) { opacity: 0; }
+.nav-hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(5,5,7,0.97);
+  backdrop-filter: blur(20px);
+  z-index: 550;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  transition: color 0.3s;
+}
+.mobile-menu a:hover { color: var(--gold); }
+.mobile-menu .mobile-phone {
+  margin-top: 20px;
+  font-family: 'Bodoni Moda', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  text-decoration: none;
+  border: 1px solid var(--gold);
+  padding: 12px 30px;
+}
+
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+#hero {
+  min-height: 100svh;
+  position: relative;
+  display: flex; flex-direction:column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+#hero-canvas {
+  position: absolute; inset:0; z-index:0;
+}
+#hero::after {
+  content:'';
+  position:absolute; inset:0; z-index:1;
+  background: linear-gradient(135deg, rgba(5,5,7,0.80) 0%, rgba(5,5,7,0.45) 50%, rgba(5,5,7,0.65) 100%);
+  pointer-events:none;
+}
+.hero-bg-text {
+  position: absolute;
+  font-family: 'Bodoni Moda', serif;
+  font-size: 28vw; font-weight:300; font-style:italic;
+  color: rgba(201,168,76,0.03);
+  white-space: nowrap; pointer-events:none;
+  top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  line-height:1; z-index:1;
+  letter-spacing:-0.02em;
+  user-select:none;
+}
+.hero-content {
+  position: relative; z-index:3;
+  padding: 0 6vw 8vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: flex-end; gap:60px;
+}
+.hero-left {}
+.hero-tag {
+  display: inline-flex; align-items:center; gap:12px;
+  margin-bottom: 28px;
+  opacity:0; animation: fadeInUp 1s ease 0.5s forwards;
+}
+.hero-tag-line { width:48px; height:1px; background: var(--gold); }
+.hero-tag-text {
+  font-size: 0.78rem; letter-spacing:0.25em; text-transform:uppercase;
+  color: var(--gold);
+}
+.hero-h1 {
+  font-family: 'Bodoni Moda', serif;
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 300; line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  text-shadow: 0 2px 20px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.5);
+  margin-bottom: 32px;
+  opacity:0; animation: fadeInUp 1s ease 0.8s forwards;
+}
+.hero-h1 em { font-style:italic; color: var(--gold2); }
+.hero-h1 .hero-line-2 { padding-left: 3vw; display:block; }
+.hero-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, rgba(201,168,76,0.5), transparent);
+  margin-bottom: 28px;
+  opacity:0; animation: scaleX 0.8s ease 1.2s forwards;
+  transform-origin: left; transform: scaleX(0);
+}
+@keyframes scaleX { to { transform: scaleX(1); opacity:1; } }
+.hero-sub {
+  font-family: 'Cormorant', serif;
+  font-size: 1.15rem; font-style:italic;
+  color: rgba(250,247,242,0.92); line-height:1.8;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.8);
+  max-width: 400px;
+  opacity:0; animation: fadeInUp 1s ease 1.1s forwards;
+}
+.hero-stats-row {
+  display: flex; gap:40px; margin-top:40px;
+  opacity:0; animation: fadeInUp 1s ease 1.4s forwards;
+}
+.hero-stat {}
+.hero-stat-n {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 2.2rem; font-weight:300; color: var(--gold2);
+  line-height:1;
+}
+.hero-stat-l {
+  font-size: 0.78rem; letter-spacing:0.18em; text-transform:uppercase;
+  color: var(--plat); margin-top:5px;
+}
+
+/* HERO FORM */
+.hero-form-wrap {
+  opacity:0; animation: fadeInUp 1s ease 1s forwards;
+}
+.hf-card {
+  border: 1px solid rgba(201,168,76,0.45);
+  background: rgba(12,12,16,0.92);
+  backdrop-filter: blur(20px);
+  padding: 44px 40px 36px;
+  position: relative;
+}
+.hf-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.hf-title {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 1.9rem; font-weight:300; color: var(--white);
+  margin-bottom:4px; letter-spacing:0.03em;
+}
+.hf-sub { font-size:0.9rem; color: var(--plat); letter-spacing:0.08em; margin-bottom:28px; }
+.hf-field { margin-bottom:14px; position:relative; }
+.hf-field label {
+  display:block; font-size:0.78rem; letter-spacing:0.2em; text-transform:uppercase;
+  color: var(--gold2); margin-bottom:8px; opacity:1;
+}
+.hf-field input,
+.hf-field select,
+.hf-field textarea {
+  width:100%; background: rgba(248,245,239,0.07);
+  border: none; border-bottom: 1px solid rgba(201,168,76,0.5);
+  padding: 12px 4px; color: var(--white);
+  font-family: 'Tenor Sans', sans-serif; font-size:1.05rem;
+  outline:none; transition: border-color 0.3s;
+  -webkit-appearance:none; border-radius:0;
+}
+.hf-field input:focus,
+.hf-field select:focus { border-bottom-color: var(--gold); }
+.hf-field input::placeholder { color: rgba(248,245,239,0.4); }
+.hf-field select option { background: var(--black2); }
+.hf-field textarea { resize:none; height:72px; }
+.hf-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.hf-btn {
+  width:100%; margin-top:8px;
+  background: transparent; border: 1px solid var(--gold);
+  color: var(--gold); padding:15px;
+  font-family: 'Tenor Sans', sans-serif;
+  font-size:0.85rem; letter-spacing:0.25em; text-transform:uppercase;
+  cursor:none; transition: background 0.4s, color 0.4s;
+  position: relative; overflow:hidden;
+}
+.hf-btn::before {
+  content:''; position:absolute; inset:0;
+  background: var(--gold); transform: scaleX(0); transform-origin:left;
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); z-index:0;
+}
+.hf-btn:hover::before { transform: scaleX(1); }
+.hf-btn:hover { color: var(--black); }
+.hf-btn span { position:relative; z-index:1; }
+
+/* SCROLL HINT */
+.scroll-hint {
+  position: absolute; bottom:36px; left:50%; transform:translateX(-50%);
+  z-index:3; display:flex; flex-direction:column; align-items:center; gap:10px;
+  opacity:0; animation: fadeInUp 1s ease 2s forwards;
+}
+.scroll-hint-line {
+  width:1px; height:48px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+.scroll-hint-text {
+  font-size:0.76rem; letter-spacing:0.25em; text-transform:uppercase;
+  color: var(--plat);
+}
+@keyframes scrollPulse {
+  0%,100% { opacity:0.4; transform:scaleY(1); }
+  50% { opacity:1; transform:scaleY(1.1); }
+}
+
+/* ═══════════════════════════════════════
+   GOLD DIVIDER
+═══════════════════════════════════════ */
+.gold-divider {
+  padding: 0 6vw;
+  display:flex; align-items:center; gap:0;
+  overflow:hidden;
+}
+.gd-line { flex:1; height:1px; background: rgba(201,168,76,0.4); }
+.gd-diamond {
+  width:7px; height:7px; background:var(--gold);
+  transform:rotate(45deg); flex-shrink:0; margin:0 16px;
+}
+.gd-text {
+  font-size:0.82rem; letter-spacing:0.25em; text-transform:uppercase;
+  color: var(--gold2); margin:0 20px; white-space:nowrap;
+}
+
+/* ═══════════════════════════════════════
+   SECTIONS BASE
+═══════════════════════════════════════ */
+.section { padding: 120px 6vw; }
+.s-inner { max-width:1240px; margin:0 auto; }
+.s-eyebrow {
+  display:flex; align-items:center; gap:14px;
+  margin-bottom:18px;
+}
+.s-eyebrow-line { width:40px; height:1px; background: var(--gold); }
+.s-eyebrow-text {
+  font-size:0.82rem; letter-spacing:0.25em; text-transform:uppercase;
+  color: var(--gold2);
+}
+.s-title {
+  font-family: 'Bodoni Moda', serif;
+  font-size: clamp(2.8rem,5.5vw,5rem);
+  font-weight:300; line-height:1.1;
+  letter-spacing:-0.01em;
+  color: var(--white);
+  text-shadow: var(--tshadow);
+}
+.s-title em { font-style:italic; color: var(--gold2); }
+.s-body {
+  font-family: 'Cormorant', serif;
+  font-size:1.35rem; font-style:italic;
+  color: var(--plat); line-height:1.9;
+  text-shadow: var(--tshadow-sm);
+  font-weight:300;
+}
+
+/* ═══════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════ */
+#services { background: var(--black2); }
+.srv-header {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:60px; align-items:flex-end; margin-bottom:72px;
+}
+.srv-grid {
+  display:grid; grid-template-columns: repeat(3,1fr);
+}
+.srv-card {
+  padding: 44px 36px;
+  border: 1px solid rgba(212,168,67,0.25);
+  border-collapse: collapse;
+  position:relative; overflow:hidden;
+  background: rgba(5,5,7,0.75);
+  backdrop-filter: blur(10px);
+  transition: border-color 0.4s, background 0.4s;
+}
+.srv-card:hover { border-color: rgba(212,168,67,0.6); background: rgba(5,5,7,0.88); }
+.srv-bg-num {
+  position:absolute; top:-10px; right:16px;
+  font-family:'Bodoni Moda',serif;
+  font-size:7rem; font-weight:300; font-style:italic;
+  color: rgba(201,168,76,0.08); line-height:1;
+  user-select:none; pointer-events:none;
+  transition: color 0.4s;
+}
+.srv-card:hover .srv-bg-num { color: rgba(201,168,76,0.18); }
+.srv-icon-wrap {
+  width:44px; height:44px;
+  border: 1px solid rgba(201,168,76,0.5);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:22px;
+  transition: background 0.3s;
+}
+.srv-card:hover .srv-icon-wrap { background: rgba(201,168,76,0.15); }
+.srv-icon-wrap svg { width:20px; height:20px; color: var(--gold); }
+.srv-name {
+  font-family:'Bodoni Moda', serif;
+  font-size:1.35rem; font-weight:400; color:var(--white);
+  margin-bottom:14px; letter-spacing:0.02em;
+  text-shadow: var(--tshadow-sm);
+}
+.srv-desc { font-size:1rem; color: var(--plat); line-height:1.85; font-weight:400; }
+.srv-link {
+  display:inline-flex; align-items:center; gap:8px;
+  margin-top:20px; font-size:0.78rem; letter-spacing:0.18em;
+  text-transform:uppercase; color: var(--gold);
+  text-decoration:none; opacity:0;
+  transition: opacity 0.3s;
+}
+.srv-card:hover .srv-link { opacity:1; }
+.srv-link svg { width:14px; height:14px; }
+
+/* ═══════════════════════════════════════
+   WHY US
+═══════════════════════════════════════ */
+#whyus { background: var(--black); }
+.wu-layout {
+  display:grid; grid-template-columns:1.1fr 1fr;
+  gap:100px; align-items:center;
+}
+.wu-visual { position:relative; }
+.wu-frame {
+  aspect-ratio:3/4;
+  background: var(--black3);
+  border: 1px solid rgba(201,168,76,0.3);
+  position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.wu-frame-inner-text {
+  font-family:'Bodoni Moda',serif;
+  font-size:10rem; font-weight:300; font-style:italic;
+  color: rgba(201,168,76,0.06); line-height:1;
+  user-select:none;
+}
+/* Decorative corner ornaments */
+.wu-frame::before, .wu-frame::after {
+  content:''; position:absolute;
+  width:40px; height:40px; z-index:2;
+}
+.wu-frame::before {
+  top:16px; left:16px;
+  border-top:1.5px solid var(--gold);
+  border-left:1.5px solid var(--gold);
+}
+.wu-frame::after {
+  bottom:16px; right:16px;
+  border-bottom:1.5px solid var(--gold);
+  border-right:1.5px solid var(--gold);
+}
+.wu-badge-float {
+  position:absolute; bottom:-24px; right:-24px;
+  width:140px; height:140px;
+  background: var(--gold);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.wu-badge-n {
+  font-family:'Bodoni Moda',serif;
+  font-size:3.6rem; font-weight:300; color: var(--black); line-height:1;
+}
+.wu-badge-l {
+  font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase;
+  color: rgba(0,0,0,0.7); margin-top:4px; text-align:center;
+}
+.wu-items { margin-top:40px; }
+.wu-item {
+  display:flex; gap:22px; align-items:flex-start;
+  padding:22px 0;
+  border-bottom:1px solid rgba(201,168,76,0.15);
+}
+.wu-item:first-child { border-top:1px solid rgba(201,168,76,0.15); }
+.wu-item-num {
+  font-family:'Bodoni Moda',serif; font-style:italic;
+  font-size:0.95rem; color: var(--gold2); flex-shrink:0;
+  padding-top:2px; min-width:24px;
+}
+.wu-item-name {
+  font-family:'Bodoni Moda',serif;
+  font-size:1rem; font-weight:400; color: var(--white); margin-bottom:8px;
+  text-shadow: var(--tshadow-sm);
+}
+.wu-item-text { font-size:0.9rem; color: var(--plat); line-height:1.85; font-weight:400; }
+
+/* ═══════════════════════════════════════
+   GALLERY
+═══════════════════════════════════════ */
+#gallery { background: var(--black2); padding-bottom:80px; }
+.gal-intro {
+  display:flex; justify-content:space-between; align-items:flex-end;
+  margin-bottom:50px;
+}
+.gal-grid {
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 620px 480px;
+  gap:6px;
+}
+.gal-cell {
+  position:relative; overflow:hidden; cursor:none;
+  background: var(--black3);
+  display:flex; align-items:center; justify-content:center;
+}
+.gal-cell-1 { grid-row: span 2; }
+.gal-cell::before {
+  content:''; position:absolute; inset:0; z-index:1;
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 55%, transparent 100%);
+  opacity:0.5; transition: opacity 0.5s;
+}
+.gal-cell:hover::before { opacity:1; }
+.gal-pattern {
+  position:absolute; inset:0; z-index:0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.06) 1px, transparent 1px);
+  background-size:50px 50px;
+  transition: opacity 0.5s;
+}
+.gal-cell:hover .gal-pattern { opacity:0.5; }
+.gal-center-text {
+  font-family:'Bodoni Moda',serif; font-style:italic;
+  font-size:5rem; color: rgba(201,168,76,0.08);
+  user-select:none; line-height:1;
+  transition: color 0.5s;
+  position:relative; z-index:0;
+}
+.gal-cell:hover .gal-center-text { color: rgba(201,168,76,0.15); }
+.gal-info {
+  position:absolute; bottom:0; left:0; right:0; z-index:2;
+  padding:20px 22px;
+  transform:translateY(10px); opacity:0.9;
+  transition: all 0.4s ease;
+}
+.gal-cell:hover .gal-info { transform:translateY(0); opacity:1; }
+.gal-info-tag {
+  font-size:0.78rem; letter-spacing:0.2em; text-transform:uppercase;
+  color: var(--gold2); margin-bottom:6px;
+}
+.gal-info-name { font-family:'Bodoni Moda',serif; font-size:1.3rem; color:var(--white); font-weight:400; }
+.gal-info-price { font-size:0.82rem; color: rgba(248,245,239,0.85); margin-top:3px; }
+
+/* ═══════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════ */
+#testimonials {
+  background: var(--black);
+  padding: 100px 6vw;
+}
+.test-header { text-align:center; margin-bottom:60px; }
+.test-header .s-eyebrow { justify-content:center; }
+.test-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(201,168,76,0.2); }
+.test-card {
+  background: rgba(5,5,7,0.82);
+  backdrop-filter: blur(16px);
+  padding: 44px 36px;
+  position:relative;
+  transition: background 0.4s;
+}
+.test-card::before {
+  content:''; position:absolute; top:0; left:36px; right:36px; height:1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform:scaleX(0); transition:transform 0.5s;
+}
+.test-card:hover { background: rgba(11,11,15,0.95); }
+.test-card:hover::before { transform:scaleX(1); }
+.test-quote-mark {
+  font-family:'Bodoni Moda',serif; font-style:italic;
+  font-size:5rem; color: rgba(212,168,67,0.55);
+  line-height:1; margin-bottom:16px; display:block;
+}
+.test-text {
+  font-family:'Cormorant',serif; font-style:italic;
+  font-size:1.32rem; color: var(--white); line-height:1.88;
+  margin-bottom:24px;
+  text-shadow: var(--tshadow-sm);
+}
+.test-author {
+  font-size:0.82rem; letter-spacing:0.2em; text-transform:uppercase;
+  color: var(--gold2); font-weight:600;
+}
+.test-stars { color: var(--gold); font-size:0.9rem; letter-spacing:4px; margin-bottom:18px; }
+
+/* ═══════════════════════════════════════
+   FAQ
+═══════════════════════════════════════ */
+#faq { background: var(--black2); }
+.faq-layout { display:grid; grid-template-columns:1fr 1.8fr; gap:100px; align-items:start; }
+.faq-sticky { position:sticky; top:110px; }
+.faq-ornament {
+  width:80px; height:80px; margin-bottom:28px;
+}
+.faq-ornament svg { width:100%; height:100%; }
+.faq-list {}
+.faq-item { border-bottom:1px solid rgba(201,168,76,0.2); }
+.faq-q {
+  width:100%; background:none; border:none; text-align:left; cursor:none;
+  padding:22px 0;
+  display:flex; justify-content:space-between; align-items:center; gap:20px;
+  font-family:'Bodoni Moda',serif;
+  font-size:1rem; color:var(--white);
+  text-shadow: var(--tshadow-sm);
+  transition: color 0.3s; font-weight:400;
+}
+.faq-q:hover, .faq-q.open { color: var(--gold2); }
+.faq-plus {
+  width:30px; height:30px; flex-shrink:0;
+  border:1px solid rgba(201,168,76,0.6);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; color: var(--gold);
+  transition: transform 0.3s, background 0.3s;
+  line-height:1;
+}
+.faq-q.open .faq-plus {
+  transform:rotate(45deg); background: var(--gold); color: var(--black);
+}
+.faq-a {
+  max-height:0; overflow:hidden;
+  transition: max-height 0.45s ease, padding 0.45s;
+  font-size:1.06rem; color: var(--plat); line-height:1.95; font-weight:400;
+}
+.faq-a.open { max-height:240px; padding-bottom:22px; }
+
+/* ═══════════════════════════════════════
+   CTA
+═══════════════════════════════════════ */
+#cta {
+  background: var(--black);
+  position:relative; overflow:hidden;
+  padding:140px 6vw;
+}
+.cta-bg-word {
+  position:absolute;
+  font-family:'Bodoni Moda',serif; font-style:italic;
+  font-size:32vw; font-weight:300;
+  color: rgba(212,168,67,0.06);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  pointer-events:none; user-select:none; white-space:nowrap;
+  letter-spacing:-0.05em; line-height:1;
+  z-index:1;
+}
+#cta::before {
+  content:'';
+  position:absolute; inset:0;
+  background: rgba(5,5,7,0.78);
+  z-index:0;
+}
+.cta-inner { position:relative; z-index:2; }
+.cta-ornament-top {
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent 10%, var(--gold) 50%, transparent 90%);
+  opacity:0.3;
+}
+.cta-ornament-bottom {
+  position:absolute; bottom:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent 10%, var(--gold) 50%, transparent 90%);
+  opacity:0.3;
+}
+.cta-inner { text-align:center; max-width:820px; margin:0 auto; }
+.cta-eyebrow { display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:28px; }
+.cta-eyebrow-line { width:60px; height:1px; background: var(--gold); }
+.cta-eyebrow-text { font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color: var(--gold); }
+.cta-h2 {
+  font-family:'Bodoni Moda',serif; font-weight:300;
+  font-size: clamp(3.2rem,6.5vw,6.5rem);
+  line-height:1.1; letter-spacing:-0.01em; color: var(--white);
+  text-shadow: 0 2px 24px rgba(0,0,0,0.95), 0 0 80px rgba(0,0,0,0.6);
+  margin-bottom:22px;
+}
+.cta-h2 em { font-style:italic; color: var(--gold2); }
+.cta-desc {
+  font-family:'Cormorant',serif; font-style:italic;
+  font-size:1.1rem; color: var(--plat);
+  text-shadow: var(--tshadow-sm);
+  line-height:1.88; margin-bottom:52px;
+}
+.cta-btns { display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; }
+.btn-gold {
+  display:inline-flex; align-items:center; gap:10px;
+  background: var(--gold); color: var(--black);
+  padding:16px 40px;
+  font-family:'Tenor Sans',sans-serif;
+  font-size:0.82rem; letter-spacing:0.2em; text-transform:uppercase;
+  text-decoration:none; transition: background 0.3s, transform 0.2s;
+  cursor:none;
+}
+.btn-gold:hover { background: var(--gold3); transform:translateY(-2px); }
+.btn-ghost {
+  display:inline-flex; align-items:center; gap:10px;
+  background:transparent; color: var(--white);
+  padding:15px 40px;
+  font-family:'Tenor Sans',sans-serif;
+  font-size:0.82rem; letter-spacing:0.2em; text-transform:uppercase;
+  text-decoration:none; border:1px solid rgba(248,245,239,0.2);
+  transition: border-color 0.3s, color 0.3s; cursor:none;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.cta-phone-row {
+  margin-top:52px; display:flex; align-items:center;
+  justify-content:center; gap:20px;
+}
+.cta-ph-sep { width:1px; height:40px; background: rgba(201,168,76,0.4); }
+.cta-ph-label { font-size:0.78rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--plat); }
+.cta-ph-num {
+  font-family:'Bodoni Moda',serif;
+  font-size:2rem; font-weight:300; letter-spacing:0.04em;
+  color:var(--white); text-decoration:none;
+  transition: color 0.3s;
+}
+.cta-ph-num:hover { color: var(--gold); }
+.cta-address {
+  margin-top:20px;
+  font-size:0.88rem; letter-spacing:0.12em; color:rgba(250,247,242,0.6);
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer {
+  background: #030305;
+  padding: 64px 6vw 28px;
+  border-top:1px solid rgba(201,168,76,0.2);
+}
+.footer-top {
+  display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:60px; margin-bottom:52px;
+}
+.footer-logo-mark {
+  font-family:'Bodoni Moda',serif; font-style:italic;
+  font-size:2.2rem; font-weight:300; color:var(--gold2);
+  letter-spacing:0.1em; margin-bottom:12px;
+}
+.footer-tagline {
+  font-size:0.95rem; color:var(--plat); line-height:1.88; margin-bottom:20px; font-weight:400;
+}
+.footer-contact-row {
+  display:flex; align-items:center; gap:10px;
+  font-size:0.95rem; color: rgba(250,247,242,0.72);
+  margin-bottom:8px; text-decoration:none;
+  transition: color 0.3s;
+}
+.footer-contact-row:hover { color: var(--gold); }
+.footer-contact-row svg { width:12px; height:12px; color: var(--gold); flex-shrink:0; }
+.footer-col-h {
+  font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--gold2); margin-bottom:22px;
+}
+.footer-links { list-style:none; }
+.footer-links li { margin-bottom:10px; }
+.footer-links a {
+  font-size:0.96rem; color: rgba(250,247,242,0.72);
+  text-decoration:none; transition:color 0.3s;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-bottom {
+  padding-top:24px; border-top:1px solid rgba(248,245,239,0.1);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.footer-copy { font-size:0.84rem; color: rgba(250,247,242,0.62); }
+.footer-right { font-size:0.72rem; color: rgba(248,245,239,0.45); }
+.footer-right span { color: var(--gold); }
+
+/* ═══════════════════════════════════════
+   WHATSAPP
+═══════════════════════════════════════ */
+.wa-float {
+  position:fixed; bottom:30px; right:30px; z-index:800;
+  width:54px; height:54px; border-radius:50%;
+  background:#1DB954; /* green */
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none;
+  box-shadow: 0 0 0 0 rgba(29,185,84,0.5);
+  animation: waPulse 2.5s ease infinite;
+  transition: transform 0.3s;
+  cursor:none;
+}
+.wa-float:hover { transform:scale(1.1); }
+.wa-float svg { width:26px; height:26px; fill:white; }
+@keyframes waPulse {
+  0%,100% { box-shadow:0 0 0 0 rgba(29,185,84,0.4); }
+  60% { box-shadow:0 0 0 14px rgba(29,185,84,0); }
+}
+
+/* ═══════════════════════════════════════
+   NOTIFICATION
+═══════════════════════════════════════ */
+.toast {
+  position:fixed; top:88px; right:24px; z-index:999;
+  background: var(--black2); border:1px solid var(--gold);
+  border-left:3px solid var(--gold);
+  padding:18px 24px; min-width:290px;
+  transform:translateX(140%); transition:transform 0.5s cubic-bezier(0.19,1,0.22,1);
+  display:flex; align-items:center; gap:14px;
+}
+.toast.show { transform:translateX(0); }
+.toast-checkmark {
+  width:28px; height:28px; border-radius:50%;
+  background: rgba(201,168,76,0.15);
+  border:1px solid var(--gold);
+  display:flex; align-items:center; justify-content:center;
+  color: var(--gold); font-size:0.75rem; flex-shrink:0;
+}
+.toast-title { font-size:0.82rem; color:var(--white); font-family:'Bodoni Moda',serif; margin-bottom:2px; }
+.toast-sub { font-size:0.7rem; color:var(--smoke); }
+
+/* ═══════════════════════════════════════
+   REVEAL ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(32px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.reveal {
+  opacity:0; transform:translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+.reveal-d3 { transition-delay:0.3s; }
+.reveal-d4 { transition-delay:0.4s; }
+.reveal-left {
+  opacity:0; transform:translateX(-30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal-left.visible { opacity:1; transform:translateX(0); }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width:1100px) {
+  .hero-content { grid-template-columns:1fr; padding-bottom:60px; }
+  .hero-h1 .hero-line-2 { padding-left:0; }
+  .srv-header { grid-template-columns:1fr; }
+  .wu-layout { grid-template-columns:1fr; }
+  .wu-visual { display:none; }
+  .test-grid { grid-template-columns:1fr; }
+  .faq-layout { grid-template-columns:1fr; }
+  .faq-sticky { position:static; }
+  .footer-top { grid-template-columns:1fr 1fr; gap:36px; }
+  .nav-links { display:none; }
+  .nav-phone { display:none; }
+  .nav-hamburger { display:flex; }
+}
+@media (max-width:700px) {
+  .section { padding: 60px 5vw; }
+  .srv-grid { grid-template-columns:1fr; }
+  .gal-grid { grid-template-columns:1fr; grid-template-rows:auto; }
+  .gal-cell { height:240px; }
+  .gal-cell-1 { grid-row:span 1; }
+  .gal-intro { flex-direction:column; align-items:flex-start; gap:16px; }
+  .footer-top { grid-template-columns:1fr; }
+  .hf-row { grid-template-columns:1fr; }
+  .hf-card { padding: 28px 20px 24px; }
+  .hero-stats-row { flex-wrap:wrap; gap:20px; }
+  .hero-h1 { font-size: clamp(2rem, 8vw, 3.5rem); }
+  .s-title { font-size: clamp(2rem, 7vw, 3rem); }
+  .cta-h2 { font-size: clamp(2rem, 7vw, 3.5rem); }
+  #cta { padding: 80px 5vw; }
+  .cta-phone-row { flex-direction:column; gap:14px; }
+  .cta-ph-sep { width:40px; height:1px; }
+  .footer-bottom { flex-direction:column; gap:10px; text-align:center; }
+  .scroll-hint { display:none; }
+  nav { padding: 0 4vw; height: 64px; }
+  .nav-wordmark { font-size: 1rem; letter-spacing: 0.2em; }
+}
+/* Fix background-attachment:fixed on iOS */
+@supports (-webkit-touch-callout: none) {
+  [style*="background-attachment:fixed"],
+  [style*="background-attachment: fixed"] {
+    background-attachment: scroll !important;
+  }
+}
+
+/* ═══════════════════════════════════════
+   CONTACT & MAP
+═══════════════════════════════════════ */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 60px;
+  align-items: start;
+}
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.contact-info-block {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 28px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+.contact-info-block:first-child {
+  border-top: 1px solid rgba(201,168,76,0.15);
+}
+.contact-info-icon {
+  width: 42px; height: 42px; flex-shrink: 0;
+  border: 1px solid rgba(201,168,76,0.4);
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 2px;
+}
+.contact-info-icon svg {
+  width: 18px; height: 18px;
+  stroke: var(--gold);
+}
+.contact-info-label {
+  font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold2); margin-bottom: 8px; font-weight: 600;
+  text-shadow: var(--tshadow-sm);
+}
+.contact-info-value {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 1.25rem; font-weight: 400;
+  color: var(--white); line-height: 1.68;
+  text-shadow: var(--tshadow-sm);
+}
+.contact-info-link {
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.contact-info-link:hover { color: var(--gold); }
+.contact-hours-row {
+  display: flex; justify-content: space-between;
+  font-size: 1rem; color: var(--plat);
+  margin-bottom: 5px; gap: 20px;
+}
+.contact-directions-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 12px;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+  padding-bottom: 3px;
+  transition: color 0.3s, border-color 0.3s;
+}
+.contact-directions-btn:hover { color: var(--gold2); border-color: var(--gold2); }
+.contact-wa-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 32px;
+  background: #1DB954;
+  color: white;
+  padding: 14px 28px;
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s;
+  cursor: none;
+}
+.contact-wa-btn:hover { background: #17a347; transform: translateY(-2px); }
+.contact-map-wrap {
+  position: relative;
+}
+.contact-map-frame {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  border: 1px solid rgba(201,168,76,0.3);
+  overflow: hidden;
+}
+.contact-map-frame::before {
+  content: '';
+  position: absolute; top: 16px; left: 16px;
+  width: 36px; height: 36px;
+  border-top: 1.5px solid var(--gold);
+  border-left: 1.5px solid var(--gold);
+  z-index: 2; pointer-events: none;
+}
+.contact-map-frame::after {
+  content: '';
+  position: absolute; bottom: 16px; right: 16px;
+  width: 36px; height: 36px;
+  border-bottom: 1.5px solid var(--gold);
+  border-right: 1.5px solid var(--gold);
+  z-index: 2; pointer-events: none;
+}
+.contact-map-pin {
+  position: absolute; top: 20px; right: 20px; z-index: 3;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(6,6,8,0.88);
+  border: 1px solid rgba(201,168,76,0.4);
+  padding: 8px 14px;
+  pointer-events: none;
+}
+.contact-map-pin svg { width: 16px; height: 16px; flex-shrink: 0; }
+.contact-map-pin span {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 0.75rem; letter-spacing: 0.12em;
+  color: var(--white);
+}
+.contact-open-maps {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 14px;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--smoke); text-decoration: none;
+  transition: color 0.3s;
+}
+.contact-open-maps:hover { color: var(--gold); }
+
+.contact-map-clickable {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+}
+.contact-map-static {
+  width: 100%; height: 100%;
+  background: #0a0a0f;
+  position: relative;
+  overflow: hidden;
+}
+.map-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.map-roads {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+.map-center-pin {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -60%);
+  display: flex; align-items: center; justify-content: center;
+}
+.map-pin-icon {
+  width: 52px; height: 52px;
+  position: relative; z-index: 3;
+  filter: drop-shadow(0 4px 16px rgba(201,168,76,0.7));
+}
+.map-pin-pulse {
+  position: absolute;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.5);
+  animation: mapPulse 2.5s ease-out infinite;
+}
+.map-pin-pulse-2 { animation-delay: 1.25s; }
+@keyframes mapPulse {
+  0% { transform: scale(0.3); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+.map-hover-overlay {
+  position: absolute; inset: 0;
+  background: rgba(6,6,8,0.72);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px; z-index: 5;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.contact-map-clickable:hover .map-hover-overlay { opacity: 1; }
+.map-hover-overlay span {
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--white);
+}
+
+@media (max-width:1100px) {
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-map-frame { height: 360px; }
+}
+
+/* ═══════════════════════════════════════
+   LANGUAGE SWITCHER
+═══════════════════════════════════════ */
+.lang-switcher { display:flex; align-items:center; gap:4px; }
+.lang-opt {
+  font-size:0.72rem; letter-spacing:0.12em;
+  color: rgba(250,247,242,0.45);
+  cursor: pointer;
+  padding: 6px 10px;
+  position: relative;
+  transition: color 0.35s, transform 0.3s;
+  overflow: hidden;
+}
+.lang-opt::before {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 50%; 
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 0.35s cubic-bezier(0.4,0,0.2,1), left 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.lang-opt:hover::before {
+  width: 60%; left: 20%;
+}
+.lang-opt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(212,168,67,0.12) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  border-radius: 4px;
+}
+.lang-opt:hover::after { opacity: 1; }
+.lang-opt:hover { color: var(--gold2); transform: translateY(-1px); }
+.lang-opt.active {
+  color: var(--gold); font-weight: 600;
+  text-shadow: 0 0 8px rgba(212,168,67,0.4);
+}
+.lang-opt.active::before {
+  width: 60%; left: 20%;
+  background: var(--gold);
+  box-shadow: 0 0 6px rgba(212,168,67,0.5);
+}
+.lang-opt:active { transform: scale(0.92); }
+.lang-sep { font-size:0.65rem; color: rgba(212,168,67,0.35); transition: color 0.3s; }
+.lang-switcher:hover .lang-sep { color: rgba(212,168,67,0.55); }
+/* RTL support for Arabic */
+html[lang="ar"] body {
+  direction: rtl;
+  text-align: right;
+}
+html[lang="ar"] .nav-links { direction: ltr; }
+html[lang="ar"] .s-eyebrow { flex-direction: row-reverse; }
+html[lang="ar"] .hero-tag { flex-direction: row-reverse; }
+html[lang="ar"] .wu-item { flex-direction: row-reverse; }
+html[lang="ar"] .contact-info-block { flex-direction: row-reverse; }
+html[lang="ar"] .hero-divider {
+  background: linear-gradient(270deg, rgba(212,168,67,0.5), transparent);
+}
+/* On touch devices, restore normal cursor on all interactive elements */
+@media (pointer: coarse) {
+  .hf-btn, .gal-cell, .faq-q, .btn-gold, .btn-ghost, .wa-float, .contact-wa-btn,
+  a, button { cursor: pointer !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cur-outer"></div>
+<div id="cur-inner"></div>
+<div id="grain"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-emblem">
+      <svg viewBox="0 0 34 34" fill="none">
+        <polygon points="17,2 32,13 26,31 8,31 2,13" stroke="#C9A84C" stroke-width="1" fill="none"/>
+        <polygon points="17,8 28,16 23,28 11,28 6,16" stroke="rgba(201,168,76,0.3)" stroke-width="0.5" fill="none"/>
+        <circle cx="17" cy="17" r="3" fill="#C9A84C" opacity="0.8"/>
+      </svg>
+    </div>
+    <span class="nav-wordmark">YUVA <span>Emlak</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services" data-i18n="nav_services">Hizmetler</a></li>
+    <li><a href="#whyus" data-i18n="nav_why">Neden Biz</a></li>
+    <li><a href="#gallery" data-i18n="nav_portfolio">Portföy</a></li>
+    <li><a href="#faq" data-i18n="nav_faq">SSS</a></li>
+    <li><a href="#contact" data-i18n="nav_contact">İletişim</a></li>
+  </ul>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher" id="langSwitcher">
+    <span class="lang-opt active" onclick="setLang('tr')" data-lang="tr">TR</span>
+    <span class="lang-sep">/</span>
+    <span class="lang-opt" onclick="setLang('en')" data-lang="en">EN</span>
+    <span class="lang-sep">/</span>
+    <span class="lang-opt" onclick="setLang('ar')" data-lang="ar">AR</span>
+  </div>
+  <a href="tel:05384995690" class="nav-phone">0538 499 56 90</a>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" data-i18n="nav_services" onclick="closeMobileMenu()">Hizmetler</a>
+  <a href="#whyus" data-i18n="nav_why" onclick="closeMobileMenu()">Neden Biz</a>
+  <a href="#gallery" data-i18n="nav_portfolio" onclick="closeMobileMenu()">Portföy</a>
+  <a href="#faq" data-i18n="nav_faq" onclick="closeMobileMenu()">SSS</a>
+  <a href="#contact" data-i18n="nav_contact" onclick="closeMobileMenu()">İletişim</a>
+  <div class="lang-switcher" style="margin-top:10px;">
+    <span class="lang-opt active" onclick="setLang('tr')" data-lang="tr">TR</span>
+    <span class="lang-sep">/</span>
+    <span class="lang-opt" onclick="setLang('en')" data-lang="en">EN</span>
+    <span class="lang-sep">/</span>
+    <span class="lang-opt" onclick="setLang('ar')" data-lang="ar">AR</span>
+  </div>
+  <a href="tel:05384995690" class="mobile-phone">0538 499 56 90</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=90&fit=crop'); background-size:cover; background-position:center;">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-bg-text">YUVA</div>
+
+  <div class="hero-content">
+    <!-- Left -->
+    <div class="hero-left">
+      <div class="hero-tag">
+        <span class="hero-tag-line"></span>
+        <span class="hero-tag-text" data-i18n="hero_tag">Başakşehir · İstanbul · Est. 2014</span>
+      </div>
+      <h1 class="hero-h1">
+        <span data-i18n="hero_h1_1">Hayalinizin</span><br>
+        <em data-i18n="hero_h1_2">Evi Sizi</em>
+        <span class="hero-line-2" data-i18n="hero_h1_3">Bekliyor</span>
+      </h1>
+      <div class="hero-divider"></div>
+      <p class="hero-sub">
+        <span data-i18n="hero_sub">Başakşehir ve çevresinde güvenilir, şeffaf ve kişiye özel gayrimenkul danışmanlığı. Her adımda yanınızdayız.</span>
+      </p>
+      <div class="hero-stats-row">
+        <div class="hero-stat">
+          <div class="hero-stat-n">500+</div>
+          <div class="hero-stat-l" data-i18n="stat1">Başarılı İşlem</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-n">10+</div>
+          <div class="hero-stat-l" data-i18n="stat2">Yıllık Deneyim</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-n">%98</div>
+          <div class="hero-stat-l" data-i18n="stat3">Memnuniyet</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="hero-form-wrap">
+      <div class="hf-card">
+        <h3 class="hf-title" data-i18n="form_title">Ücretsiz Danışmanlık</h3>
+        <p class="hf-sub" data-i18n="form_sub">Uzmanlarımız sizi en kısa sürede arayacak</p>
+        <div class="hf-row">
+          <div class="hf-field">
+            <label data-i18n="form_name">Ad Soyad</label>
+            <input type="text" placeholder="Adınız" id="f-name">
+          </div>
+          <div class="hf-field">
+            <label data-i18n="form_phone">Telefon</label>
+            <input type="tel" placeholder="05XX XXX XX XX" id="f-phone">
+          </div>
+        </div>
+        <div class="hf-field">
+          <label data-i18n="form_need">İhtiyaç Türü</label>
+          <select id="f-type">
+            <option value="" data-i18n="form_select">Seçiniz...</option>
+            <option data-i18n="opt1">Satılık Daire</option>
+            <option data-i18n="opt2">Kiralık Daire</option>
+            <option data-i18n="opt3">Satılık Villa / Müstakil</option>
+            <option data-i18n="opt4">Ticari Gayrimenkul</option>
+            <option data-i18n="opt5">Yatırım Danışmanlığı</option>
+            <option data-i18n="opt6">Gayrimenkul Değerleme</option>
+          </select>
+        </div>
+        <button class="hf-btn" onclick="submitForm()"><span data-i18n="form_btn">Gönder</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-hint-line"></div>
+    <span class="scroll-hint-text" data-i18n="scroll_hint">Kaydır</span>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="gold-divider" style="padding:18px 6vw;">
+  <div class="gd-line"></div>
+  <div class="gd-diamond"></div>
+  <span class="gd-text" data-i18n="div1_text">Prestij · Güven · Sonuç</span>
+  <div class="gd-diamond"></div>
+  <div class="gd-line"></div>
+</div>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services" class="section" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1920&q=85&fit=crop'); background-size:cover; background-position:center; background-attachment:fixed; position:relative;">
+  <div style="position:absolute;inset:0;background:rgba(6,6,8,0.88);z-index:0;"></div>
+  <div class="s-inner" style="position:relative;z-index:1;">
+    <div class="srv-header">
+      <div>
+        <div class="s-eyebrow reveal">
+          <div class="s-eyebrow-line"></div>
+          <span class="s-eyebrow-text" data-i18n="srv_eyebrow">Hizmetlerimiz</span>
+        </div>
+        <h2 class="s-title reveal reveal-d1"><span data-i18n="srv_title1">Her İhtiyacınız</span><br><em data-i18n="srv_title2">İçin Çözüm</em></h2>
+      </div>
+      <p class="s-body reveal reveal-d2">
+        <span data-i18n="srv_body">Konut alım-satımından ticari gayrimenkule, değerlemeden yatırım danışmanlığına — eksiksiz hizmet portföyü.</span>
+      </p>
+    </div>
+
+    <div class="srv-grid">
+      <div class="srv-card reveal">
+        <div class="srv-img-wrap" style="width:100%;height:160px;overflow:hidden;margin:-44px -36px 22px -36px;width:calc(100% + 72px);position:relative;"><img src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=600&q=85&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(17,17,22,0.95));"></div></div><div class="srv-bg-num">01</div>
+        <div class="srv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
+        <div class="srv-name" data-i18n="srv1_name">Konut Alım & Satım</div>
+        <div class="srv-desc" data-i18n="srv1_desc">Daire, villa, müstakil ev — hayalinizdeki konuta en uygun fiyat ve koşullarla ulaşmanızı sağlıyoruz.</div>
+        
+      </div>
+      <div class="srv-card reveal reveal-d1">
+        <div class="srv-img-wrap" style="width:100%;height:160px;overflow:hidden;margin:-44px -36px 22px -36px;width:calc(100% + 72px);position:relative;"><img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=600&q=85&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(17,17,22,0.95));"></div></div><div class="srv-bg-num">02</div>
+        <div class="srv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="srv-name" data-i18n="srv2_name">Kiralık Danışmanlık</div>
+        <div class="srv-desc" data-i18n="srv2_desc">Kiracı arayışı, sözleşme ve mülk yönetiminde güvenilir ve şeffaf hizmet. Hem ev sahiplerine hem kiracılara.</div>
+        
+      </div>
+      <div class="srv-card reveal reveal-d2">
+        <div class="srv-img-wrap" style="width:100%;height:160px;overflow:hidden;margin:-44px -36px 22px -36px;width:calc(100% + 72px);position:relative;"><img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=85&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(17,17,22,0.95));"></div></div><div class="srv-bg-num">03</div>
+        <div class="srv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="srv-name" data-i18n="srv3_name">Yatırım Danışmanlığı</div>
+        <div class="srv-desc" data-i18n="srv3_desc">Piyasa analizi ve lokasyon değerlendirmesiyle en yüksek getiriyi sağlayacak yatırımları birlikte planlıyoruz.</div>
+        
+      </div>
+      <div class="srv-card reveal reveal-d1">
+        <div class="srv-img-wrap" style="width:100%;height:160px;overflow:hidden;margin:-44px -36px 22px -36px;width:calc(100% + 72px);position:relative;"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=85&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(17,17,22,0.95));"></div></div><div class="srv-bg-num">04</div>
+        <div class="srv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="srv-name" data-i18n="srv4_name">Ticari Gayrimenkul</div>
+        <div class="srv-desc" data-i18n="srv4_desc">Ofis, dükkan, depo ve arazi alım, satım ve kiralama işlemlerinde kurumsal düzeyde danışmanlık.</div>
+        
+      </div>
+      <div class="srv-card reveal reveal-d2">
+        <div class="srv-img-wrap" style="width:100%;height:160px;overflow:hidden;margin:-44px -36px 22px -36px;width:calc(100% + 72px);position:relative;"><img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=85&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(17,17,22,0.95));"></div></div><div class="srv-bg-num">05</div>
+        <div class="srv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div class="srv-name" data-i18n="srv5_name">Tapu & Hukuki Süreç</div>
+        <div class="srv-desc" data-i18n="srv5_desc">Tapu devri, ipotek ve sözleşme hazırlığında doğru ve hızlı yönlendirme. Hukuki süreçleri kolaylaştırıyoruz.</div>
+        
+      </div>
+      <div class="srv-card reveal reveal-d3">
+        <div class="srv-img-wrap" style="width:100%;height:160px;overflow:hidden;margin:-44px -36px 22px -36px;width:calc(100% + 72px);position:relative;"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=85&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(17,17,22,0.95));"></div></div><div class="srv-bg-num">06</div>
+        <div class="srv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <div class="srv-name" data-i18n="srv6_name">Gayrimenkul Değerleme</div>
+        <div class="srv-desc" data-i18n="srv6_desc">Mülkünüzün gerçek piyasa değerini kapsamlı analiz ve bölge karşılaştırmasıyla belirliyoruz.</div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY US ═══ -->
+<section id="whyus" class="section" style="background-image:url('https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1920&q=85&fit=crop'); background-size:cover; background-position:center; background-attachment:fixed; position:relative;">
+  <div style="position:absolute;inset:0;background:rgba(6,6,8,0.92);z-index:0;"></div>
+  <div class="s-inner" style="position:relative;z-index:1;">
+    <div class="wu-layout">
+      <div class="wu-visual reveal-left">
+        <div class="wu-frame">
+          <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=85&fit=crop" alt="Yuva Emlak - Lüks Konut" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+        </div>
+        <div class="wu-badge-float">
+          <div class="wu-badge-n">500+</div>
+          <div class="wu-badge-l" data-i18n="why_badge">Mutlu Aile</div>
+        </div>
+      </div>
+      <div>
+        <div class="s-eyebrow reveal">
+          <div class="s-eyebrow-line"></div>
+          <span class="s-eyebrow-text" data-i18n="why_eyebrow">Neden YUVA Emlak?</span>
+        </div>
+        <h2 class="s-title reveal reveal-d1" style="margin-bottom:16px;">
+          <span data-i18n="why_title1">Güven, Deneyim</span><br><em data-i18n="why_title2">ve Samimilik</em>
+        </h2>
+        <p class="s-body reveal reveal-d2" style="margin-bottom:0;">
+          <span data-i18n="why_body">Elif Hanım ve ekibimiz her işlemde dürüstlüğü ön planda tutar. "Güveniyorum" — müşterilerimizin bizi anlattığı tek kelime.</span>
+        </p>
+        <div class="wu-items">
+          <div class="wu-item reveal reveal-d1">
+            <span class="wu-item-num">I</span>
+            <div>
+              <div class="wu-item-name" data-i18n="wu1_name">Şeffaf İletişim</div>
+              <div class="wu-item-text" data-i18n="wu1_text">Her aşamada açık iletişim. Gizli ücret yok, sürpriz yok. Tapu gününe kadar her detayı sizinle paylaşıyoruz.</div>
+            </div>
+          </div>
+          <div class="wu-item reveal reveal-d2">
+            <span class="wu-item-num">II</span>
+            <div>
+              <div class="wu-item-name" data-i18n="wu2_name">Hızlı & Çözüm Odaklı</div>
+              <div class="wu-item-text" data-i18n="wu2_text">Sorularınızı 24 saat içinde yanıtlıyoruz. Süreçleri en kısa sürede, en az stresle tamamlıyoruz.</div>
+            </div>
+          </div>
+          <div class="wu-item reveal reveal-d3">
+            <span class="wu-item-num">III</span>
+            <div>
+              <div class="wu-item-name" data-i18n="wu3_name">Kişiye Özel Yaklaşım</div>
+              <div class="wu-item-text" data-i18n="wu3_text">Her müşteri farklıdır. Bütçenizi, yaşam tarzınızı ve beklentilerinizi dinleyerek size özel çözümler üretiyoruz.</div>
+            </div>
+          </div>
+          <div class="wu-item reveal reveal-d4">
+            <span class="wu-item-num">IV</span>
+            <div>
+              <div class="wu-item-name" data-i18n="wu4_name">Derin Bölge Bilgisi</div>
+              <div class="wu-item-text" data-i18n="wu4_text">Başakşehir ve Kayabaşı bölgesinde yılların deneyimiyle oluşturulan piyasa bilgisi ve geniş portföy.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section id="gallery" class="section" style="padding-bottom:80px; background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80&fit=crop'); background-size:cover; background-position:center; position:relative;">
+  <div style="position:absolute;inset:0;background:rgba(12,12,16,0.95);z-index:0;"></div>
+  <div class="s-inner" style="position:relative;z-index:1;">
+    <div class="gal-intro">
+      <div>
+        <div class="s-eyebrow reveal">
+          <div class="s-eyebrow-line"></div>
+          <span class="s-eyebrow-text" data-i18n="gal_eyebrow">Seçkin Portföy</span>
+        </div>
+        <h2 class="s-title reveal reveal-d1"><span data-i18n="gal_title1">Prestijli</span> <em data-i18n="gal_title2">Mülkler</em></h2>
+      </div>
+      <a href="tel:05384995690" class="btn-ghost reveal" data-i18n="gal_btn">Tümünü Görüntüle</a>
+    </div>
+
+    <div class="gal-grid">
+      <div class="gal-cell gal-cell-1 reveal">
+        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1800&q=92&fit=crop" alt="3+1 Lüks Daire Kayabaşı" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;">
+        <div class="gal-pattern"></div>
+        <div class="gal-info">
+          <div class="gal-info-tag" data-i18n="gal1_tag">Kayabaşı · Satılık</div>
+          <div class="gal-info-name" data-i18n="gal1_name">3+1 Lüks Daire</div>
+          
+        </div>
+      </div>
+      <div class="gal-cell reveal reveal-d1">
+        <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1200&q=92&fit=crop" alt="2+1 Modern Daire" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;">
+        <div class="gal-pattern"></div>
+        <div class="gal-info">
+          <div class="gal-info-tag" data-i18n="gal2_tag">Başakşehir · Kiralık</div>
+          <div class="gal-info-name" data-i18n="gal2_name">2+1 Modern Daire</div>
+          
+        </div>
+      </div>
+      <div class="gal-cell reveal reveal-d2">
+        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&q=92&fit=crop" alt="Müstakil Villa" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;">
+        <div class="gal-pattern"></div>
+        <div class="gal-info">
+          <div class="gal-info-tag" data-i18n="gal3_tag">Bahçeşehir · Satılık</div>
+          <div class="gal-info-name" data-i18n="gal3_name">Müstakil Villa</div>
+          
+        </div>
+      </div>
+
+      <div class="gal-cell reveal reveal-d4">
+        <img src="https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?w=1200&q=92&fit=crop" alt="Konut Yatırım" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0;">
+        <div class="gal-pattern"></div>
+        <div class="gal-info">
+          <div class="gal-info-tag" data-i18n="gal4_tag">Kayaşehir · Yatırım</div>
+          <div class="gal-info-name" data-i18n="gal4_name">Yatırımlık Arsa</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=90&fit=crop'); background-size:cover; background-position:center top; position:relative;">
+  <div style="position:absolute;inset:0;background:rgba(5,5,7,0.82);z-index:0;"></div>
+  <div class="s-inner" style="position:relative;z-index:1;">
+    <div class="test-header">
+      <div class="s-eyebrow reveal" style="justify-content:center;">
+        <div class="s-eyebrow-line"></div>
+        <span class="s-eyebrow-text" data-i18n="test_eyebrow">Müşteri Görüşleri</span>
+        <div class="s-eyebrow-line"></div>
+      </div>
+      <h2 class="s-title reveal reveal-d1" style="text-align:center;"><span data-i18n="test_title1">Onların</span> <em data-i18n="test_title2">Sözleri</em></h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div style="width:calc(100% + 72px);height:130px;overflow:hidden;margin:-44px -36px 22px -36px;position:relative;"><img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(6,6,8,0.4);"></div></div>
+        <div class="test-stars">★ ★ ★ ★ ★</div>
+        <span class="test-quote-mark">"</span>
+        <p class="test-text" data-i18n="test1_text">Gayrimenkulde güvenebileceğim tek kişi Elif Hanım. Süreç boyunca hiç endişe yaşamadım. Çok teşekkür ederim.</p>
+        <div class="test-author" data-i18n="test1_author">Sema Yayla — Başakşehir</div>
+      </div>
+      <div class="test-card reveal reveal-d1">
+        <div style="width:calc(100% + 72px);height:130px;overflow:hidden;margin:-44px -36px 22px -36px;position:relative;"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(6,6,8,0.4);"></div></div>
+        <div class="test-stars">★ ★ ★ ★ ★</div>
+        <span class="test-quote-mark">"</span>
+        <p class="test-text" data-i18n="test2_text">Elif Hanım çok ilgili ve çok neşeli. Her sorumuza sabırla yanıt verdi. Herkese gönül rahatlığıyla tavsiye ederim.</p>
+        <div class="test-author" data-i18n="test2_author">Başak — Kayabaşı</div>
+      </div>
+      <div class="test-card reveal reveal-d2">
+        <div style="width:calc(100% + 72px);height:130px;overflow:hidden;margin:-44px -36px 22px -36px;position:relative;"><img src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(6,6,8,0.4);"></div></div>
+        <div class="test-stars">★ ★ ★ ★ ★</div>
+        <span class="test-quote-mark">"</span>
+        <p class="test-text" data-i18n="test3_text">Korkmaz Bey ve Elif Hanım'a ilgileri ve profesyonellikleri için çok teşekkür ederim. Mükemmel bir ekip.</p>
+        <div class="test-author" data-i18n="test3_author">Hatice Taş — İstanbul</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- DIVIDER -->
+<div class="gold-divider" style="padding:20px 6vw; background:var(--black2);">
+  <div class="gd-line"></div>
+  <div class="gd-diamond"></div>
+  <span class="gd-text" data-i18n="div2_text">Kayabaşı · Başakşehir · Kayaşehir · Bahçeşehir · İkitelli</span>
+  <div class="gd-diamond"></div>
+  <div class="gd-line"></div>
+</div>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq" class="section" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=85&fit=crop'); background-size:cover; background-position:center; background-attachment:fixed; position:relative;">
+  <div style="position:absolute;inset:0;background:rgba(6,6,8,0.93);z-index:0;"></div>
+  <div class="s-inner" style="position:relative;z-index:1;">
+    <div class="faq-layout">
+      <div class="faq-sticky">
+        <!-- Art Deco ornament -->
+        <div style="width:100%; aspect-ratio:4/3; overflow:hidden; margin-bottom:28px; border:1px solid rgba(201,168,76,0.3); position:relative;">
+          <img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=700&q=85&fit=crop" alt="Emlak" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:rgba(6,6,8,0.25);"></div>
+        </div>
+        <div class="faq-ornament">
+          <svg viewBox="0 0 80 80" fill="none">
+            <polygon points="40,4 76,26 76,54 40,76 4,54 4,26" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+            <polygon points="40,14 66,29 66,51 40,66 14,51 14,29" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/>
+            <circle cx="40" cy="40" r="4" fill="rgba(201,168,76,0.5)"/>
+            <line x1="40" y1="14" x2="40" y2="36" stroke="rgba(201,168,76,0.3)" stroke-width="0.5"/>
+            <line x1="40" y1="44" x2="40" y2="66" stroke="rgba(201,168,76,0.3)" stroke-width="0.5"/>
+            <line x1="14" y1="40" x2="36" y2="40" stroke="rgba(201,168,76,0.3)" stroke-width="0.5"/>
+            <line x1="44" y1="40" x2="66" y2="40" stroke="rgba(201,168,76,0.3)" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="s-eyebrow reveal">
+          <div class="s-eyebrow-line"></div>
+          <span class="s-eyebrow-text" data-i18n="faq_eyebrow">SSS</span>
+        </div>
+        <h2 class="s-title reveal reveal-d1" style="margin-bottom:16px;"><span data-i18n="faq_title1">Sık Sorulan</span><br><em data-i18n="faq_title2">Sorular</em></h2>
+        <p class="s-body reveal reveal-d2">
+          <span data-i18n="faq_body">Aklınızdaki soruyu bulamadınız mı? Bizi arayın — ücretsiz danışmanlık sunuyoruz.</span>
+        </p>
+        <div style="margin-top:30px;" class="reveal reveal-d3">
+          <a href="tel:05384995690" class="btn-gold">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07"/></svg>
+            <span data-i18n="faq_call_btn">Hemen Ara</span>
+          </a>
+        </div>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq_q1">Ev almak için nereden başlamalıyım?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            <span data-i18n="faq_a1">İlk adım bütçenizi ve ihtiyaçlarınızı netleştirmektir. Kaç odalı, hangi semtte, ne amaçla (oturma/yatırım) istediğinizi belirledikten sonra bizi arayın. Ücretsiz bir görüşmeyle size özel portföy sunuyoruz.</span>
+          </div>
+        </div>
+        <div class="faq-item reveal reveal-d1">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq_q2">Danışmanlık ücreti alıyor musunuz?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            <span data-i18n="faq_a2">İlk görüşme ve piyasa bilgilendirmemiz tamamen ücretsizdir. Danışmanlık ücretimiz yalnızca işlem gerçekleştiğinde ve yasalar çerçevesinde uygulanır. Herhangi bir gizli ücretimiz yoktur.</span>
+          </div>
+        </div>
+        <div class="faq-item reveal reveal-d2">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq_q3">Başakşehir'de ev fiyatları nasıl?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            <span data-i18n="faq_a3">Başakşehir ve Kayabaşı, İstanbul'un en hızlı değerlenen bölgeleri arasında. Yeni metro hatları, hastane ve AVM'ler talebi artırıyor. Güncel fiyat analizi için bizi arayın.</span>
+          </div>
+        </div>
+        <div class="faq-item reveal reveal-d1">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq_q4">Tapu işlemleri ne kadar sürer?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            <span data-i18n="faq_a4">Evraklar eksiksiz olduğunda tapu devri genellikle 1–3 iş günü içinde tamamlanır. Kredi kullanımında banka süreci 7–15 gün sürebilir. Ofisimiz tüm belge ve randevu süreçlerini sizin adınıza yönetir.</span>
+          </div>
+        </div>
+        <div class="faq-item reveal reveal-d2">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq_q5">Mülkümü satmak istiyorum, ne yapmalıyım?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            <span data-i18n="faq_a5">Ücretsiz keşif randevusu alın. Mülkünüzü yerinde inceleyerek piyasa değerini belirliyor, ilan hazırlığını üstleniyoruz. Fiyat müzakeresi ve tapu süreçlerini sizin adınıza yürütüyoruz.</span>
+          </div>
+        </div>
+        <div class="faq-item reveal reveal-d3">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq_q6">Yabancı uyruklu alıcılara hizmet veriyor musunuz?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-a">
+            <span data-i18n="faq_a6">Evet. Yabancı uyruklu alıcılara Türkiye'de mülk edinme, gerekli izinler ve Türk vatandaşlığı için yatırım şartları konularında destek sağlıyoruz.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="cta" style="background-image:url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1920&q=85&fit=crop'); background-size:cover; background-position:center; background-attachment:fixed;">
+  <div class="cta-ornament-top"></div>
+  <div class="cta-bg-word">Yuva</div>
+  <div class="cta-inner">
+    <div class="cta-eyebrow reveal">
+      <span class="cta-eyebrow-line"></span>
+      <span class="cta-eyebrow-text" data-i18n="cta_eyebrow">Harekete Geçin</span>
+      <span class="cta-eyebrow-line"></span>
+    </div>
+    <h2 class="cta-h2 reveal reveal-d1">
+      <span data-i18n="cta_h1">Yuvanızı Bulmak İçin</span><br><em data-i18n="cta_h2">Tek Adım Kaldı</em>
+    </h2>
+    <p class="cta-desc reveal reveal-d2">
+      <span data-i18n="cta_desc">Bugün bizi arayın veya formu doldurun. Deneyimli danışmanlarımız size özel çözümlerle en kısa sürede geri dönsün.</span>
+    </p>
+    <div class="cta-btns reveal reveal-d3">
+      <a href="tel:05384995690" class="btn-gold">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        <span data-i18n="btn_call">Hemen Ara</span>
+      </a>
+      <a href="#hero" class="btn-ghost" data-i18n="btn_form">Danışma Formu</a>
+    </div>
+    <div class="cta-phone-row reveal reveal-d4">
+      <div>
+        <div class="cta-ph-label" data-i18n="cta_phone_label">Telefon & WhatsApp</div>
+        <a href="tel:05384995690" class="cta-ph-num">0538 499 56 90</a>
+      </div>
+      <div class="cta-ph-sep"></div>
+      <div>
+        <div class="cta-ph-label" data-i18n="cta_hours_label">Çalışma Saatleri</div>
+        <div style="font-family:'Bodoni Moda',serif; font-size:1rem; color:var(--plat);" data-i18n="cta_hours_val">Pzt–Cum 08:30–20:00</div>
+      </div>
+    </div>
+    <p class="cta-address reveal" data-i18n="address_text">Kayabaşı, 34494 Başakşehir / İstanbul</p>
+  </div>
+  <div class="cta-ornament-bottom"></div>
+</section>
+
+
+<!-- ═══ İLETİŞİM & HARİTA ═══ -->
+<section id="contact" style="background-image:url('https://images.unsplash.com/photo-1494526585095-c41746248156?w=1920&q=85&fit=crop'); background-size:cover; background-position:center; background-attachment:fixed; padding:100px 6vw; position:relative;">
+  <div style="position:absolute;inset:0;background:rgba(6,6,8,0.92);z-index:0;"></div>
+  <div class="s-inner">
+
+    <div style="text-align:center; margin-bottom:60px;">
+      <div class="s-eyebrow reveal" style="justify-content:center;">
+        <div class="s-eyebrow-line"></div>
+        <span class="s-eyebrow-text" data-i18n="cont_eyebrow">Bize Ulaşın</span>
+        <div class="s-eyebrow-line"></div>
+      </div>
+      <h2 class="s-title reveal reveal-d1" style="margin-top:12px;"><span data-i18n="cont_title1">Ofisimizi</span> <em data-i18n="cont_title2">Ziyaret Edin</em></h2>
+    </div>
+
+    <div class="contact-grid">
+
+      <div class="contact-info reveal reveal-d1">
+
+        <div class="contact-info-block">
+          <div class="contact-info-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="contact-info-label" data-i18n="cont_address_label">Adres</div>
+            <div class="contact-info-value" data-i18n="address_text">Kayabaşı, 34494 Başakşehir / İstanbul</div>
+            <a href="https://maps.app.goo.gl/FLeAAEYEiLjwTYr78" target="_blank" class="contact-directions-btn" data-i18n-directions>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M13 6l6 6-6 6"/></svg>
+              Yol Tarifi Al
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-info-block">
+          <div class="contact-info-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-info-label" data-i18n="cont_phone_label">Telefon & WhatsApp</div>
+            <a href="tel:05384995690" class="contact-info-value contact-info-link">0538 499 56 90</a>
+          </div>
+        </div>
+
+        <div class="contact-info-block">
+          <div class="contact-info-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <div>
+            <div class="contact-info-label" data-i18n="cont_hours_label">Çalışma Saatleri</div>
+            <div class="contact-info-value">
+              <div class="contact-hours-row"><span data-i18n="hours_weekday">Pzt – Cum</span><span>08:30 – 20:00</span></div>
+              <div class="contact-hours-row"><span data-i18n="hours_sat">Cumartesi</span><span>10:00 – 16:00</span></div>
+              <div class="contact-hours-row" style="color:var(--smoke);"><span data-i18n="hours_sun">Pazar</span><span data-i18n="hours_closed">Kapalı</span></div>
+            </div>
+          </div>
+        </div>
+
+        <a href="https://wa.me/905384995690?text=Merhaba%2C%20emlak%20dan%C4%B1%C5%9Fmanl%C4%B1%C4%9F%C4%B1%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" class="contact-wa-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp ile Yaz
+        </a>
+
+      </div>
+
+      <div class="contact-map-wrap reveal reveal-d2">
+        <a href="https://maps.app.goo.gl/FLeAAEYEiLjwTYr78" target="_blank" class="contact-map-frame contact-map-clickable" title="Google Maps'te Aç">
+          <!-- Static satellite map via OpenStreetMap tiles rendered as SVG background -->
+          <div class="contact-map-static">
+            <!-- Dark map grid background -->
+            <div class="map-grid"></div>
+            <!-- Decorative roads SVG -->
+            <svg class="map-roads" viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg">
+              <!-- Major roads -->
+              <line x1="0" y1="200" x2="600" y2="190" stroke="rgba(201,168,76,0.25)" stroke-width="8"/>
+              <line x1="0" y1="320" x2="600" y2="310" stroke="rgba(201,168,76,0.15)" stroke-width="5"/>
+              <line x1="180" y1="0" x2="195" y2="480" stroke="rgba(201,168,76,0.2)" stroke-width="6"/>
+              <line x1="380" y1="0" x2="365" y2="480" stroke="rgba(201,168,76,0.15)" stroke-width="4"/>
+              <line x1="500" y1="0" x2="490" y2="480" stroke="rgba(201,168,76,0.1)" stroke-width="3"/>
+              <!-- Secondary roads -->
+              <line x1="0" y1="120" x2="600" y2="115" stroke="rgba(255,255,255,0.05)" stroke-width="2"/>
+              <line x1="0" y1="400" x2="600" y2="390" stroke="rgba(255,255,255,0.05)" stroke-width="2"/>
+              <line x1="80" y1="0" x2="90" y2="480" stroke="rgba(255,255,255,0.04)" stroke-width="2"/>
+              <line x1="300" y1="0" x2="295" y2="480" stroke="rgba(255,255,255,0.04)" stroke-width="2"/>
+              <!-- Curved boulevard -->
+              <path d="M 0 260 Q 150 240 300 255 Q 450 270 600 250" stroke="rgba(201,168,76,0.18)" stroke-width="4" fill="none"/>
+              <!-- City blocks -->
+              <rect x="20" y="230" width="70" height="50" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+              <rect x="100" y="225" width="60" height="45" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+              <rect x="220" y="215" width="80" height="60" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+              <rect x="310" y="220" width="40" height="50" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+              <rect x="410" y="225" width="65" height="55" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+              <rect x="510" y="215" width="70" height="45" fill="rgba(255,168,76,0.04)" stroke="rgba(201,168,76,0.1)" stroke-width="0.5"/>
+              <rect x="20" y="340" width="55" height="40" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+              <rect x="100" y="345" width="65" height="35" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+              <rect x="220" y="335" width="50" height="45" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+              <rect x="410" y="340" width="55" height="40" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+            </svg>
+            <!-- Center pin -->
+            <div class="map-center-pin">
+              <div class="map-pin-pulse"></div>
+              <div class="map-pin-pulse map-pin-pulse-2"></div>
+              <svg class="map-pin-icon" viewBox="0 0 24 24" fill="var(--gold)">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+            </div>
+            <!-- Hover overlay -->
+            <div class="map-hover-overlay">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <span data-i18n="maps_open">Google Maps'te Aç</span>
+            </div>
+          </div>
+          <div class="contact-map-pin">
+            <svg viewBox="0 0 24 24" fill="var(--gold)" width="16" height="16"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <span>YUVA Emlak — Kayabaşı</span>
+          </div>
+        </a>
+        <a href="https://maps.app.goo.gl/FLeAAEYEiLjwTYr78" target="_blank" class="contact-open-maps">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span data-i18n="maps_open">Google Maps'te Aç</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer style="background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80&fit=crop'); background-size:cover; background-position:center; position:relative;">
+  <div style="position:absolute;inset:0;background:rgba(3,3,5,0.97);z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo-mark">Yuva</div>
+      <p class="footer-tagline" data-i18n="footer_tagline">Başakşehir ve çevresinde güvenilir, şeffaf ve profesyonel emlak danışmanlığı. Her müşterimiz için en iyi evi, en iyi koşullarla bulmak misyonumuzdur.</p>
+      <a href="tel:05384995690" class="footer-contact-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07"/></svg>
+        0538 499 56 90
+      </a>
+      <div class="footer-contact-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span data-i18n="address_text">Kayabaşı, 34494 Başakşehir / İstanbul</span>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-h" data-i18n="footer_services_h">Hizmetler</div>
+      <ul class="footer-links">
+        <li><a href="#services" data-i18n="srv1_name">Konut Alım & Satım</a></li>
+        <li><a href="#services" data-i18n="srv2_name">Kiralık Danışmanlık</a></li>
+        <li><a href="#services" data-i18n="srv3_name">Yatırım Danışmanlığı</a></li>
+        <li><a href="#services" data-i18n="srv4_name">Ticari Gayrimenkul</a></li>
+        <li><a href="#services" data-i18n="srv6_name_short">Değerleme</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-h" data-i18n="footer_regions_h">Bölgeler</div>
+      <ul class="footer-links">
+        <li><a href="#">Başakşehir</a></li>
+        <li><a href="#">Kayabaşı</a></li>
+        <li><a href="#">Kayaşehir</a></li>
+        <li><a href="#">Bahçeşehir</a></li>
+        <li><a href="#">İkitelli</a></li>
+        <li><a href="#">Esenyurt</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-h" data-i18n="footer_hours_h">Saatler</div>
+      <ul class="footer-links">
+        <li><a href="#" data-i18n="footer_mon">Pazartesi: 08:30 – 20:00</a></li>
+        <li><a href="#" data-i18n="footer_tue">Salı: 08:30 – 20:00</a></li>
+        <li><a href="#" data-i18n="footer_wed">Çarşamba: 08:30 – 20:00</a></li>
+        <li><a href="#" data-i18n="footer_thu">Perşembe: 08:30 – 20:00</a></li>
+        <li><a href="#" data-i18n="footer_fri">Cuma: 08:30 – 20:00</a></li>
+        <li><a href="#" data-i18n="footer_sat">Cumartesi: 10:00 – 16:00</a></li>
+        <li><a href="#" style="color:var(--smoke);" data-i18n="footer_sun">Pazar: Kapalı</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy" data-i18n="footer_copy">© 2025 YUVA Emlak Yatırım Ofisi · Tüm hakları saklıdır.</span>
+    <span class="footer-right"><span data-i18n="footer_today">Bugün açık:</span> <span>08:30 – 20:00</span></span>
+  </div>
+  </div>
+</footer>
+
+<!-- WhatsApp -->
+<a class="wa-float" href="https://wa.me/905384995690?text=Merhaba%2C%20emlak%20dan%C4%B1%C5%9Fmanl%C4%B1%C4%9F%C4%B1%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" title="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="toast-checkmark">✓</div>
+  <div>
+    <div class="toast-title" data-i18n="toast_title">Talebiniz Alındı</div>
+    <div class="toast-sub" data-i18n="toast_sub">En kısa sürede sizi arayacağız.</div>
+  </div>
+</div>
+
+<script>
+/* ── MOBILE MENU ── */
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('navHamburger');
+  menu.classList.toggle('open');
+  btn.classList.toggle('active');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('navHamburger').classList.remove('active');
+  document.body.style.overflow = '';
+}
+</script>
+
+<script>
+/* ── CURSOR ── */
+const outer = document.getElementById('cur-outer');
+const inner = document.getElementById('cur-inner');
+let mx=0,my=0, ox=0,oy=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  inner.style.left = mx+'px'; inner.style.top = my+'px';
+});
+(function animCursor(){
+  ox += (mx-ox)*0.12; oy += (my-oy)*0.12;
+  outer.style.left = ox+'px'; outer.style.top = oy+'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => { outer.style.width='58px'; outer.style.height='58px'; outer.style.borderColor='rgba(201,168,76,0.9)'; });
+  el.addEventListener('mouseleave', () => { outer.style.width='36px'; outer.style.height='36px'; outer.style.borderColor='rgba(201,168,76,0.6)'; });
+});
+
+/* ── PARTICLE CANVAS ── */
+const canvas = document.getElementById('hero-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+function resizeCanvas(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+function Particle(){
+  this.x = Math.random()*W;
+  this.y = Math.random()*H;
+  this.r = Math.random()*1.2+0.3;
+  this.vx = (Math.random()-0.5)*0.25;
+  this.vy = (Math.random()-0.5)*0.25;
+  this.alpha = Math.random()*0.5+0.1;
+}
+for(let i=0;i<100;i++) particles.push(new Particle());
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(201,168,76,${p.alpha})`;
+    ctx.fill();
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>W) p.vx*=-1;
+    if(p.y<0||p.y>H) p.vy*=-1;
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY>50);
+});
+
+/* ── REVEAL ── */
+const reveals = document.querySelectorAll('.reveal, .reveal-left');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
+},{threshold:0.1});
+reveals.forEach(el=>obs.observe(el));
+
+/* ── FAQ ── */
+function toggleFaq(btn){
+  const ans = btn.nextElementSibling;
+  document.querySelectorAll('.faq-q').forEach(b=>{ if(b!==btn) b.classList.remove('open'); });
+  document.querySelectorAll('.faq-a').forEach(a=>{ if(a!==ans) a.classList.remove('open'); });
+  btn.classList.toggle('open');
+  ans.classList.toggle('open');
+}
+
+/* ── FORM ── */
+function submitForm(){
+  const name=document.getElementById('f-name').value;
+  const phone=document.getElementById('f-phone').value;
+  if(!name||!phone){
+    ['f-name','f-phone'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(!el.value){ el.style.borderBottomColor='#e74c3c'; setTimeout(()=>el.style.borderBottomColor='',2000); }
+    });
+    return;
+  }
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),4000);
+  ['f-name','f-phone','f-msg'].forEach(id=>document.getElementById(id).value='');
+}
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+</script>
+
+
+
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  YUVA Emlak — Complete i18n Engine (TR / EN / AR)
+// ════════════════════════════════════════════════════════════
+const T = {
+  tr: {
+    page_title: 'YUVA Emlak — Lüks Gayrimenkul · İstanbul',
+    // NAV
+    nav_services:'Hizmetler', nav_why:'Neden Biz', nav_portfolio:'Portföy',
+    nav_faq:'SSS', nav_contact:'İletişim',
+    // HERO
+    hero_tag:'Başakşehir · İstanbul · Est. 2014',
+    hero_h1_1:'Hayalinizin', hero_h1_2:'Evi Sizi', hero_h1_3:'Bekliyor',
+    hero_sub:'Başakşehir ve çevresinde güvenilir, şeffaf ve kişiye özel gayrimenkul danışmanlığı. Her adımda yanınızdayız.',
+    stat1:'Başarılı İşlem', stat2:'Yıllık Deneyim', stat3:'Memnuniyet',
+    scroll_hint:'Kaydır',
+    // FORM
+    form_title:'Ücretsiz Danışmanlık', form_sub:'Uzmanlarımız sizi en kısa sürede arayacak',
+    form_name:'Ad Soyad', form_phone:'Telefon', form_need:'İhtiyaç Türü',
+    form_select:'Seçiniz...', form_btn:'Gönder',
+    form_placeholder_name:'Adınız', form_placeholder_phone:'05XX XXX XX XX',
+    opt1:'Satılık Daire', opt2:'Kiralık Daire', opt3:'Satılık Villa / Müstakil',
+    opt4:'Ticari Gayrimenkul', opt5:'Yatırım Danışmanlığı', opt6:'Gayrimenkul Değerleme',
+    // DIVIDERS
+    div1_text:'Prestij · Güven · Sonuç',
+    div2_text:'Kayabaşı · Başakşehir · Kayaşehir · Bahçeşehir · İkitelli',
+    // SERVICES
+    srv_eyebrow:'Hizmetlerimiz', srv_title1:'Her İhtiyacınız', srv_title2:'İçin Çözüm',
+    srv_body:'Konut alım-satımından ticari gayrimenkule, değerlemeden yatırım danışmanlığına — eksiksiz hizmet portföyü.',
+    srv_link:'Detaylı Bilgi',
+    srv1_name:'Konut Alım & Satım', srv1_desc:'Daire, villa, müstakil ev — hayalinizdeki konuta en uygun fiyat ve koşullarla ulaşmanızı sağlıyoruz.',
+    srv2_name:'Kiralık Danışmanlık', srv2_desc:'Kiracı arayışı, sözleşme ve mülk yönetiminde güvenilir ve şeffaf hizmet. Hem ev sahiplerine hem kiracılara.',
+    srv3_name:'Yatırım Danışmanlığı', srv3_desc:'Piyasa analizi ve lokasyon değerlendirmesiyle en yüksek getiriyi sağlayacak yatırımları birlikte planlıyoruz.',
+    srv4_name:'Ticari Gayrimenkul', srv4_desc:'Ofis, dükkan, depo ve arazi alım, satım ve kiralama işlemlerinde kurumsal düzeyde danışmanlık.',
+    srv5_name:'Tapu & Hukuki Süreç', srv5_desc:'Tapu devri, ipotek ve sözleşme hazırlığında doğru ve hızlı yönlendirme. Hukuki süreçleri kolaylaştırıyoruz.',
+    srv6_name:'Gayrimenkul Değerleme', srv6_name_short:'Değerleme', srv6_desc:'Mülkünüzün gerçek piyasa değerini kapsamlı analiz ve bölge karşılaştırmasıyla belirliyoruz.',
+    // WHY US
+    why_eyebrow:'Neden YUVA Emlak?', why_title1:'Güven, Deneyim', why_title2:'ve Samimilik',
+    why_badge:'Mutlu Aile',
+    why_body:'Elif Hanım ve ekibimiz her işlemde dürüstlüğü ön planda tutar. "Güveniyorum" — müşterilerimizin bizi anlattığı tek kelime.',
+    wu1_name:'Şeffaf İletişim', wu1_text:'Her aşamada açık iletişim. Gizli ücret yok, sürpriz yok. Tapu gününe kadar her detayı sizinle paylaşıyoruz.',
+    wu2_name:'Hızlı & Çözüm Odaklı', wu2_text:'Sorularınızı 24 saat içinde yanıtlıyoruz. Süreçleri en kısa sürede, en az stresle tamamlıyoruz.',
+    wu3_name:'Kişiye Özel Yaklaşım', wu3_text:'Her müşteri farklıdır. Bütçenizi, yaşam tarzınızı ve beklentilerinizi dinleyerek size özel çözümler üretiyoruz.',
+    wu4_name:'Derin Bölge Bilgisi', wu4_text:'Başakşehir ve Kayabaşı bölgesinde yılların deneyimiyle oluşturulan piyasa bilgisi ve geniş portföy.',
+    // GALLERY
+    gal_eyebrow:'Seçkin Portföy', gal_title1:'Prestijli', gal_title2:'Mülkler', gal_btn:'Tümünü Görüntüle',
+    gal1_tag:'Kayabaşı · Satılık', gal1_name:'3+1 Lüks Daire',
+    gal2_tag:'Başakşehir · Kiralık', gal2_name:'2+1 Modern Daire',
+    gal3_tag:'Bahçeşehir · Satılık', gal3_name:'Müstakil Villa',
+    gal4_tag:'Kayaşehir · Yatırım', gal4_name:'Yatırımlık Arsa',
+    // TESTIMONIALS
+    test_eyebrow:'Müşteri Görüşleri', test_title1:'Onların', test_title2:'Sözleri',
+    test1_text:'Gayrimenkulde güvenebileceğim tek kişi Elif Hanım. Süreç boyunca hiç endişe yaşamadım. Çok teşekkür ederim.',
+    test1_author:'Sema Yayla — Başakşehir',
+    test2_text:'Elif Hanım çok ilgili ve çok neşeli. Her sorumuza sabırla yanıt verdi. Herkese gönül rahatlığıyla tavsiye ederim.',
+    test2_author:'Başak — Kayabaşı',
+    test3_text:"Korkmaz Bey ve Elif Hanım'a ilgileri ve profesyonellikleri için çok teşekkür ederim. Mükemmel bir ekip.",
+    test3_author:'Hatice Taş — İstanbul',
+    // FAQ
+    faq_eyebrow:'SSS', faq_title1:'Sık Sorulan', faq_title2:'Sorular',
+    faq_body:'Aklınızdaki soruyu bulamadınız mı? Bizi arayın — ücretsiz danışmanlık sunuyoruz.',
+    faq_call_btn:'Hemen Ara',
+    faq_q1:'Ev almak için nereden başlamalıyım?',
+    faq_a1:'İlk adım bütçenizi ve ihtiyaçlarınızı netleştirmektir. Kaç odalı, hangi semtte, ne amaçla (oturma/yatırım) istediğinizi belirledikten sonra bizi arayın. Ücretsiz bir görüşmeyle size özel portföy sunuyoruz.',
+    faq_q2:'Danışmanlık ücreti alıyor musunuz?',
+    faq_a2:'İlk görüşme ve piyasa bilgilendirmemiz tamamen ücretsizdir. Danışmanlık ücretimiz yalnızca işlem gerçekleştiğinde ve yasalar çerçevesinde uygulanır. Herhangi bir gizli ücretimiz yoktur.',
+    faq_q3:"Başakşehir'de ev fiyatları nasıl?",
+    faq_a3:"Başakşehir ve Kayabaşı, İstanbul'un en hızlı değerlenen bölgeleri arasında. Yeni metro hatları, hastane ve AVM'ler talebi artırıyor. Güncel fiyat analizi için bizi arayın.",
+    faq_q4:'Tapu işlemleri ne kadar sürer?',
+    faq_a4:'Evraklar eksiksiz olduğunda tapu devri genellikle 1–3 iş günü içinde tamamlanır. Kredi kullanımında banka süreci 7–15 gün sürebilir. Ofisimiz tüm belge ve randevu süreçlerini sizin adınıza yönetir.',
+    faq_q5:'Mülkümü satmak istiyorum, ne yapmalıyım?',
+    faq_a5:'Ücretsiz keşif randevusu alın. Mülkünüzü yerinde inceleyerek piyasa değerini belirliyor, ilan hazırlığını üstleniyoruz. Fiyat müzakeresi ve tapu süreçlerini sizin adınıza yürütüyoruz.',
+    faq_q6:'Yabancı uyruklu alıcılara hizmet veriyor musunuz?',
+    faq_a6:"Evet. Yabancı uyruklu alıcılara Türkiye'de mülk edinme, gerekli izinler ve Türk vatandaşlığı için yatırım şartları konularında destek sağlıyoruz.",
+    // CTA
+    cta_eyebrow:'Harekete Geçin', cta_h1:'Yuvanızı Bulmak İçin', cta_h2:'Tek Adım Kaldı',
+    cta_desc:'Bugün bizi arayın veya formu doldurun. Deneyimli danışmanlarımız size özel çözümlerle en kısa sürede geri dönsün.',
+    cta_phone_label:'Telefon & WhatsApp', cta_hours_label:'Çalışma Saatleri', cta_hours_val:'Pzt–Cum 08:30–20:00',
+    btn_call:'Hemen Ara', btn_form:'Danışma Formu',
+    address_text:'Kayabaşı, 34494 Başakşehir / İstanbul',
+    // CONTACT
+    cont_eyebrow:'Bize Ulaşın', cont_title1:'Ofisimizi', cont_title2:'Ziyaret Edin',
+    cont_address_label:'Adres', cont_phone_label:'Telefon & WhatsApp', cont_hours_label:'Çalışma Saatleri',
+    hours_weekday:'Pzt – Cum', hours_sat:'Cumartesi', hours_sun:'Pazar', hours_closed:'Kapalı',
+    maps_open:"Google Maps'te Aç",
+    wa_text:'WhatsApp ile Ulaş', directions_text:'Yol Tarifi Al',
+    // FOOTER
+    footer_tagline:'Başakşehir ve çevresinde güvenilir, şeffaf ve profesyonel emlak danışmanlığı. Her müşterimiz için en iyi evi, en iyi koşullarla bulmak misyonumuzdur.',
+    footer_services_h:'Hizmetler', footer_regions_h:'Bölgeler', footer_hours_h:'Saatler',
+    footer_mon:'Pazartesi: 08:30 – 20:00', footer_tue:'Salı: 08:30 – 20:00',
+    footer_wed:'Çarşamba: 08:30 – 20:00', footer_thu:'Perşembe: 08:30 – 20:00',
+    footer_fri:'Cuma: 08:30 – 20:00', footer_sat:'Cumartesi: 10:00 – 16:00',
+    footer_sun:'Pazar: Kapalı', footer_today:'Bugün açık:',
+    footer_copy:'© 2025 YUVA Emlak Yatırım Ofisi · Tüm hakları saklıdır.',
+    // TOAST
+    toast_title:'Talebiniz Alındı', toast_sub:'En kısa sürede sizi arayacağız.',
+  },
+
+  en: {
+    page_title: 'YUVA Emlak — Luxury Real Estate · Istanbul',
+    nav_services:'Services', nav_why:'Why Us', nav_portfolio:'Portfolio',
+    nav_faq:'FAQ', nav_contact:'Contact',
+    hero_tag:'Başakşehir · Istanbul · Est. 2014',
+    hero_h1_1:'Your Dream', hero_h1_2:'Home Is', hero_h1_3:'Waiting',
+    hero_sub:'Trusted, transparent and personalised real estate consultancy in Başakşehir and beyond. With you at every step.',
+    stat1:'Successful Deals', stat2:'Years Experience', stat3:'Satisfaction',
+    scroll_hint:'Scroll',
+    form_title:'Free Consultation', form_sub:'Our experts will call you shortly',
+    form_name:'Full Name', form_phone:'Phone', form_need:'Request Type',
+    form_select:'Select...', form_btn:'Send',
+    form_placeholder_name:'Your Name', form_placeholder_phone:'+90 5XX XXX XX XX',
+    opt1:'Apartment for Sale', opt2:'Apartment for Rent', opt3:'Villa / Detached for Sale',
+    opt4:'Commercial Real Estate', opt5:'Investment Consultancy', opt6:'Property Valuation',
+    div1_text:'Prestige · Trust · Results',
+    div2_text:'Kayabaşı · Başakşehir · Kayaşehir · Bahçeşehir · İkitelli',
+    srv_eyebrow:'Our Services', srv_title1:'A Solution For', srv_title2:'Every Need',
+    srv_body:'From residential buying and selling to commercial property, valuation to investment — a complete service portfolio.',
+    srv_link:'Learn More',
+    srv1_name:'Residential Sales', srv1_desc:'Apartments, villas, detached homes — we help you reach your dream property at the best price and terms.',
+    srv2_name:'Rental Consultancy', srv2_desc:'Tenant search, contracts and property management — reliable and transparent service for both landlords and tenants.',
+    srv3_name:'Investment Advisory', srv3_desc:'We plan the highest-yield investments together through market analysis and location assessments.',
+    srv4_name:'Commercial Property', srv4_desc:'Professional consultancy for buying, selling and leasing offices, shops, warehouses and land.',
+    srv5_name:'Title Deed & Legal', srv5_desc:'Accurate and fast guidance on title deed transfers, mortgages and contract preparation. We simplify the legal process.',
+    srv6_name:'Property Valuation', srv6_name_short:'Valuation', srv6_desc:"We determine your property's true market value through comprehensive analysis and regional comparisons.",
+    why_eyebrow:'Why YUVA Emlak?', why_title1:'Trust, Experience', why_title2:'& Sincerity',
+    why_badge:'Happy Families',
+    why_body:'Elif and our team always put honesty first in every transaction. "I trust them" — the single word our clients use to describe us.',
+    wu1_name:'Transparent Communication', wu1_text:'Open communication at every stage. No hidden fees, no surprises. We share every detail with you until the title deed day.',
+    wu2_name:'Fast & Solution-Oriented', wu2_text:'We respond to your questions within 24 hours. We complete processes in the shortest time with the least stress.',
+    wu3_name:'Personalised Approach', wu3_text:'Every client is different. We listen to your budget, lifestyle and expectations to create tailored solutions.',
+    wu4_name:'Deep Local Knowledge', wu4_text:'Market knowledge and extensive portfolio built over years of experience in the Başakşehir and Kayabaşı area.',
+    gal_eyebrow:'Select Portfolio', gal_title1:'Prestigious', gal_title2:'Properties', gal_btn:'View All',
+    gal1_tag:'Kayabaşı · For Sale', gal1_name:'3+1 Luxury Apartment',
+    gal2_tag:'Başakşehir · For Rent', gal2_name:'2+1 Modern Apartment',
+    gal3_tag:'Bahçeşehir · For Sale', gal3_name:'Detached Villa',
+    gal4_tag:'Kayaşehir · Investment', gal4_name:'Investment Land',
+    test_eyebrow:'Client Reviews', test_title1:'Their', test_title2:'Words',
+    test1_text:'Elif is the only person I can trust in real estate. I had no worries throughout the process. Thank you so much.',
+    test1_author:'Sema Yayla — Başakşehir',
+    test2_text:'Elif was very attentive and cheerful. She patiently answered all our questions. I recommend her to everyone with full confidence.',
+    test2_author:'Başak — Kayabaşı',
+    test3_text:'Many thanks to Mr. Korkmaz and Elif for their attention and professionalism. A wonderful team.',
+    test3_author:'Hatice Taş — Istanbul',
+    faq_eyebrow:'FAQ', faq_title1:'Frequently', faq_title2:'Asked Questions',
+    faq_body:"Can't find your question? Call us — we offer free consultations.",
+    faq_call_btn:'Call Now',
+    faq_q1:'Where do I start when buying a property?',
+    faq_a1:'The first step is to clarify your budget and needs — how many rooms, which area, and the purpose (living/investment). Then contact us. We offer a personalised portfolio with a free consultation.',
+    faq_q2:'Do you charge a consultancy fee?',
+    faq_a2:'Our initial meeting and market briefing are completely free. Our consultancy fee is only applied when a transaction is completed and within the legal framework. There are no hidden fees.',
+    faq_q3:'What are property prices like in Başakşehir?',
+    faq_a3:'Başakşehir and Kayabaşı are among the fastest appreciating areas in Istanbul. New metro lines, hospitals and shopping centres are driving demand. Call us for an up-to-date price analysis.',
+    faq_q4:'How long does the title deed process take?',
+    faq_a4:'When documents are complete, the title deed transfer is usually completed within 1–3 business days. With a mortgage, the bank process may take 7–15 days. Our office manages all documents and appointments on your behalf.',
+    faq_q5:'I want to sell my property, what should I do?',
+    faq_a5:'Book a free property inspection. We assess the market value on-site and take over the listing preparation. We handle price negotiations and title deed processes on your behalf.',
+    faq_q6:'Do you serve foreign buyers?',
+    faq_a6:'Yes. We support foreign buyers with property acquisition in Turkey, required permits and investment conditions for Turkish citizenship.',
+    cta_eyebrow:'Take Action', cta_h1:'One Step Away From', cta_h2:'Your New Home',
+    cta_desc:'Call us today or fill in the form. Our experienced consultants will get back to you with tailored solutions as soon as possible.',
+    cta_phone_label:'Phone & WhatsApp', cta_hours_label:'Working Hours', cta_hours_val:'Mon–Fri 08:30–20:00',
+    btn_call:'Call Now', btn_form:'Consultation Form',
+    address_text:'Kayabaşı, 34494 Başakşehir / Istanbul',
+    cont_eyebrow:'Reach Us', cont_title1:'Visit', cont_title2:'Our Office',
+    cont_address_label:'Address', cont_phone_label:'Phone & WhatsApp', cont_hours_label:'Working Hours',
+    hours_weekday:'Mon – Fri', hours_sat:'Saturday', hours_sun:'Sunday', hours_closed:'Closed',
+    maps_open:'Open in Google Maps',
+    wa_text:'Contact via WhatsApp', directions_text:'Get Directions',
+    footer_tagline:'Reliable, transparent and professional real estate consultancy in Başakşehir and beyond. Our mission is to find the best home for every client at the best terms.',
+    footer_services_h:'Services', footer_regions_h:'Areas', footer_hours_h:'Hours',
+    footer_mon:'Monday: 08:30 – 20:00', footer_tue:'Tuesday: 08:30 – 20:00',
+    footer_wed:'Wednesday: 08:30 – 20:00', footer_thu:'Thursday: 08:30 – 20:00',
+    footer_fri:'Friday: 08:30 – 20:00', footer_sat:'Saturday: 10:00 – 16:00',
+    footer_sun:'Sunday: Closed', footer_today:'Open today:',
+    footer_copy:'© 2025 YUVA Emlak Investment Office · All rights reserved.',
+    toast_title:'Request Received', toast_sub:'We will call you as soon as possible.',
+  },
+
+  ar: {
+    page_title: 'يوفا إيملاك — عقارات فاخرة · إسطنبول',
+    nav_services:'خدماتنا', nav_why:'لماذا نحن', nav_portfolio:'المحفظة',
+    nav_faq:'الأسئلة', nav_contact:'اتصل بنا',
+    hero_tag:'باشاكشهير · إسطنبول · تأسست 2014',
+    hero_h1_1:'منزل أحلامك', hero_h1_2:'في انتظارك', hero_h1_3:'الآن',
+    hero_sub:'استشارات عقارية موثوقة وشفافة ومخصصة في باشاكشهير وما حولها. معك في كل خطوة.',
+    stat1:'صفقة ناجحة', stat2:'سنوات خبرة', stat3:'رضا العملاء',
+    scroll_hint:'اسحب',
+    form_title:'استشارة مجانية', form_sub:'سيتصل بك خبراؤنا في أقرب وقت',
+    form_name:'الاسم الكامل', form_phone:'رقم الهاتف', form_need:'نوع الطلب',
+    form_select:'اختر...', form_btn:'إرسال',
+    form_placeholder_name:'اسمك الكامل', form_placeholder_phone:'+90 5XX XXX XX XX',
+    opt1:'شقة للبيع', opt2:'شقة للإيجار', opt3:'فيلا للبيع',
+    opt4:'عقار تجاري', opt5:'استشارة استثمارية', opt6:'تقييم عقاري',
+    div1_text:'تميّز · ثقة · نتائج',
+    div2_text:'كايا باشي · باشاكشهير · كاياشهير · بهچه شهير · إيكيتيلي',
+    srv_eyebrow:'خدماتنا', srv_title1:'حل لكل', srv_title2:'احتياجاتك',
+    srv_body:'من بيع وشراء المساكن إلى العقارات التجارية، ومن التقييم إلى الاستشارة الاستثمارية — محفظة خدمات متكاملة.',
+    srv_link:'اعرف المزيد',
+    srv1_name:'بيع وشراء المساكن', srv1_desc:'شقق وفيلات ومنازل مستقلة — نساعدك في الوصول إلى منزل أحلامك بأفضل سعر وشروط.',
+    srv2_name:'استشارة الإيجار', srv2_desc:'البحث عن المستأجرين والعقود وإدارة الممتلكات — خدمة موثوقة وشفافة لكل من الملاك والمستأجرين.',
+    srv3_name:'الاستشارة الاستثمارية', srv3_desc:'نخطط معاً للاستثمارات الأعلى عائداً من خلال تحليل السوق وتقييم المواقع.',
+    srv4_name:'العقارات التجارية', srv4_desc:'استشارة احترافية لشراء وبيع وتأجير المكاتب والمحلات والمستودعات والأراضي.',
+    srv5_name:'سند الملكية والإجراءات القانونية', srv5_desc:'توجيه دقيق وسريع في نقل سند الملكية والرهون العقارية وإعداد العقود.',
+    srv6_name:'تقييم العقارات', srv6_name_short:'التقييم', srv6_desc:'نحدد القيمة السوقية الحقيقية لعقارك من خلال تحليل شامل ومقارنة إقليمية.',
+    why_eyebrow:'لماذا يوفا إيملاك؟', why_title1:'ثقة وخبرة', why_title2:'وصدق',
+    why_badge:'عائلة سعيدة',
+    why_body:'إليف وفريقنا يضعون الأمانة في المقدمة في كل معاملة. "أثق بهم" — الكلمة الوحيدة التي يصفنا بها عملاؤنا.',
+    wu1_name:'تواصل شفاف', wu1_text:'تواصل مفتوح في كل مرحلة. لا رسوم مخفية ولا مفاجآت. نشاركك كل التفاصيل حتى يوم استلام سند الملكية.',
+    wu2_name:'سريع وموجه نحو الحل', wu2_text:'نرد على أسئلتك خلال 24 ساعة. ننجز الإجراءات في أقصر وقت وبأقل قدر من التوتر.',
+    wu3_name:'نهج مخصص لكل عميل', wu3_text:'كل عميل مختلف. نستمع إلى ميزانيتك وأسلوب حياتك وتوقعاتك لنقدم لك حلولاً مخصصة.',
+    wu4_name:'معرفة عميقة بالمنطقة', wu4_text:'معرفة بالسوق ومحفظة واسعة بُنيت على سنوات من الخبرة في منطقة باشاكشهير وكايا باشي.',
+    gal_eyebrow:'محفظة مختارة', gal_title1:'عقارات', gal_title2:'مميزة', gal_btn:'عرض الكل',
+    gal1_tag:'كايا باشي · للبيع', gal1_name:'شقة فاخرة 3+1',
+    gal2_tag:'باشاكشهير · للإيجار', gal2_name:'شقة عصرية 2+1',
+    gal3_tag:'بهچه شهير · للبيع', gal3_name:'فيلا مستقلة',
+    gal4_tag:'كاياشهير · استثمار', gal4_name:'أرض استثمارية',
+    test_eyebrow:'آراء العملاء', test_title1:'كلماتهم', test_title2:'الصادقة',
+    test1_text:'إليف هي الوحيدة التي أثق بها في مجال العقارات. لم أشعر بأي قلق طوال العملية. شكراً جزيلاً.',
+    test1_author:'سيما يايلا — باشاكشهير',
+    test2_text:'إليف حنيم مهتمة جداً ومرحة. أجابت على كل أسئلتنا بصبر. أنصح بها للجميع بكل اطمئنان.',
+    test2_author:'باشاك — كايا باشي',
+    test3_text:'شكراً جزيلاً للسيد قورقماز وإليف على اهتمامهم واحترافيتهم. فريق رائع.',
+    test3_author:'هاتيجة طاش — إسطنبول',
+    faq_eyebrow:'الأسئلة الشائعة', faq_title1:'أسئلة', faq_title2:'متكررة',
+    faq_body:'لم تجد سؤالك؟ اتصل بنا — نقدم استشارة مجانية.',
+    faq_call_btn:'اتصل الآن',
+    faq_q1:'من أين أبدأ عند شراء عقار؟',
+    faq_a1:'الخطوة الأولى هي تحديد ميزانيتك واحتياجاتك — عدد الغرف، المنطقة، والغرض (سكن أو استثمار). ثم تواصل معنا. نقدم محفظة مخصصة لك مجاناً.',
+    faq_q2:'هل تتقاضون رسوم استشارة؟',
+    faq_a2:'الاجتماع الأول وإحاطة السوق مجانية تماماً. تُطبق رسوم الاستشارة فقط عند إتمام المعاملة وضمن الإطار القانوني. لا توجد رسوم مخفية.',
+    faq_q3:'كيف هي أسعار العقارات في باشاكشهير؟',
+    faq_a3:'باشاكشهير وكايا باشي من أسرع المناطق ارتفاعاً في القيمة في إسطنبول. خطوط المترو الجديدة والمستشفيات والمراكز التجارية تزيد الطلب. اتصل بنا لتحليل أسعار محدّث.',
+    faq_q4:'كم يستغرق إجراء نقل سند الملكية؟',
+    faq_a4:'عندما تكون الوثائق مكتملة، يتم نقل سند الملكية عادةً خلال 1–3 أيام عمل. مع القرض العقاري، قد تستغرق إجراءات البنك 7–15 يوماً. مكتبنا يتولى جميع الوثائق والمواعيد نيابةً عنك.',
+    faq_q5:'أريد بيع عقاري، ماذا أفعل؟',
+    faq_a5:'احجز موعد فحص مجاني. نقيّم قيمة العقار في الموقع ونتولى إعداد الإعلان. نتعامل مع مفاوضات الأسعار وإجراءات سند الملكية نيابةً عنك.',
+    faq_q6:'هل تخدمون المشترين الأجانب؟',
+    faq_a6:'نعم. ندعم المشترين الأجانب في الحصول على العقارات في تركيا والتصاريح المطلوبة وشروط الاستثمار للحصول على الجنسية التركية.',
+    cta_eyebrow:'ابدأ الآن', cta_h1:'خطوة واحدة تفصلك', cta_h2:'عن منزل أحلامك',
+    cta_desc:'تواصل معنا اليوم أو أرسل النموذج. مستشارونا المتخصصون سيعودون إليك بحلول مخصصة في أقرب وقت.',
+    cta_phone_label:'هاتف وواتساب', cta_hours_label:'ساعات العمل', cta_hours_val:'الإثنين–الجمعة 08:30–20:00',
+    btn_call:'اتصل الآن', btn_form:'نموذج الاستشارة',
+    address_text:'كايا باشي، 34494 باشاكشهير / إسطنبول',
+    cont_eyebrow:'تواصل معنا', cont_title1:'زيارة', cont_title2:'مكتبنا',
+    cont_address_label:'العنوان', cont_phone_label:'هاتف وواتساب', cont_hours_label:'ساعات العمل',
+    hours_weekday:'الإثنين – الجمعة', hours_sat:'السبت', hours_sun:'الأحد', hours_closed:'مغلق',
+    maps_open:'فتح في خرائط جوجل',
+    wa_text:'تواصل عبر واتساب', directions_text:'الحصول على الاتجاهات',
+    footer_tagline:'استشارات عقارية موثوقة وشفافة واحترافية في باشاكشهير وما حولها. مهمتنا إيجاد أفضل منزل لكل عميل بأفضل الشروط.',
+    footer_services_h:'الخدمات', footer_regions_h:'المناطق', footer_hours_h:'ساعات العمل',
+    footer_mon:'الإثنين: 08:30 – 20:00', footer_tue:'الثلاثاء: 08:30 – 20:00',
+    footer_wed:'الأربعاء: 08:30 – 20:00', footer_thu:'الخميس: 08:30 – 20:00',
+    footer_fri:'الجمعة: 08:30 – 20:00', footer_sat:'السبت: 10:00 – 16:00',
+    footer_sun:'الأحد: مغلق', footer_today:'مفتوح اليوم:',
+    footer_copy:'© 2025 يوفا إيملاك للاستثمار العقاري · جميع الحقوق محفوظة.',
+    toast_title:'تم استلام طلبك', toast_sub:'سنتصل بك في أقرب وقت ممكن.',
+  }
+};
+
+function setLang(lang) {
+  if (!T[lang]) return;
+  const t = T[lang];
+
+  // html attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  if (t.page_title) document.title = t.page_title;
+
+  // All data-i18n text content
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+
+  // Select options (data-i18n on <option>)
+  document.querySelectorAll('option[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+
+  // Input placeholders
+  const nameInput = document.getElementById('f-name');
+  const phoneInput = document.getElementById('f-phone');
+  if (nameInput && t.form_placeholder_name) nameInput.placeholder = t.form_placeholder_name;
+  if (phoneInput && t.form_placeholder_phone) phoneInput.placeholder = t.form_placeholder_phone;
+
+  // WhatsApp button text
+  const waBtn = document.querySelector('.contact-wa-btn');
+  if (waBtn && t.wa_text) {
+    const svg = waBtn.querySelector('svg');
+    waBtn.textContent = t.wa_text;
+    if (svg) waBtn.prepend(svg);
+  }
+
+  // Directions button text
+  const dirBtn = document.querySelector('.contact-directions-btn');
+  if (dirBtn && t.directions_text) {
+    const svg = dirBtn.querySelector('svg');
+    dirBtn.textContent = t.directions_text;
+    if (svg) dirBtn.prepend(svg);
+  }
+
+  // Sync active state
+  document.querySelectorAll('.lang-opt').forEach(el => {
+    el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+  });
+
+  // Store preference
+  try { localStorage.setItem('yuva_lang', lang); } catch(e) {}
+}
+
+// Auto-load on page start
+document.addEventListener('DOMContentLoaded', function() {
+  let saved = 'tr';
+  try { saved = localStorage.getItem('yuva_lang') || 'tr'; } catch(e) {}
+  if (T[saved]) setLang(saved);
+});
+</script>
+
+</body>
+</html>
